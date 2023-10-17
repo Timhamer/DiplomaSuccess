@@ -19,3 +19,8 @@ Route::get('/', function () {
 });
 
 Route::get('/adduser', [UserController::class, 'index'])->name('adduser');
+Route::post('/createuser', [UserController::class, 'create'])->name('createuser');
+
+Route::get('/login', [UserController::class, 'createLogin'])->name('login');
+Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
+Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
