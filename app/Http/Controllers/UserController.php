@@ -7,6 +7,48 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    function homeRedirect(Request $request)
+    {
+        if (session('user') == null) {
+            return redirect()->route('login');
+        } else {
+            if (session('role') == 1) {
+                return redirect()->route('stageoverzicht');
+            } else {
+                return redirect()->route('adduser'); //placeholder, veranderen naar studentenoverzicht
+            }
+        }
+    }
+
+    public function createLogin()
+    {
+        return view('login');
+    }
+
+    function loginUser(Request $request)
+    {
+        $Email = $request->email;
+        $Password = $request->password;
+
+        $user = User::where('email', $Email)->first();
+
+        if ($user == null) {
+            return redirect()->back()->with('error', 'Emailadres of wachtwoord is onjuist.');
+        }
+
+        if (password_verify($Password, $user->password)) {
+            session(['user' => $user]);
+            session(['role' => $user->role]);
+
+            $request->session()->save() ;
+
+            return redirect()->route('homeRedirect');
+        } else {
+            return redirect()->back()->with('error', 'Emailadres of wachtwoord is onjuist.');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */

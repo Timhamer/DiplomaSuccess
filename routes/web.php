@@ -19,3 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/adduser', [UserController::class, 'index'])->name('adduser');
+
+Route::get('/login', [UserController::class, 'createLogin'])->name('login');
+Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
+Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
