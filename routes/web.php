@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('/adduser', [UserController::class, 'index'])->name('adduser');
+Route::post('/createuser', [UserController::class, 'create'])->name('createuser');
