@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Mail\WelcomeEmail;
+use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PHPMailer\PHPMailer\PHPMailer;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -13,14 +17,14 @@ class UserController extends Controller
     {
         if (session('user') == null) {
             return redirect()->route('login');
-        } else {
-            if (session('role') == 1) {
-                return redirect()->route('stageoverzicht');
+        } 
+            elseif (session('role') == 1) {
+                                    return redirect()->route('stageoverzicht');
             } else {
                 return redirect()->route('adduser'); //placeholder, veranderen naar studentenoverzicht
             }
         }
-    }
+    
 
     public function createLogin()
     {
@@ -58,39 +62,40 @@ class UserController extends Controller
         return view('AddAccount');
     }
 
-    private function SendEmail($to, $subject, $body, $redirect)
+    private function SendEmail($to, $subject, $redirect)
     {
-        require base_path("vendor/autoload.php");
-        $mail = new PHPMailer(true);
+        Mail::to($to)->send(new WelcomeEmail());
+        // require base_path("vendor/autoload.php");
+        // $mail = new PHPMailer(true);
 
-        try {
-            $mail->SMTPDebug = 0;
-            $mail->isSMTP();
-            $mail->Host = "smtp.office365.com";
-            $mail->SMTPAuth = true;
-            $mail->Username = "idee-print@hotmail.com";
-            $mail->Password = "eL75@I#f@RZFa7CWT0X7kHl";
-            $mail->SMTPSecure = "tls";
-            $mail->Port = 587;
+        // try {
+        //     $mail->SMTPDebug = 0;
+        //     $mail->isSMTP();
+        //     $mail->Host = "smtp.office365.com";
+        //     $mail->SMTPAuth = true;
+        //     $mail->Username = "idee-print@hotmail.com";
+        //     $mail->Password = "eL75@I#f@RZFa7CWT0X7kHl";
+        //     $mail->SMTPSecure = "tls";
+        //     $mail->Port = 587;
 
-            $mail->setFrom($mail->Username, "");
-            $mail->addAddress($to);
+        //     $mail->setFrom($mail->Username, "");
+        //     $mail->addAddress($to);
 
-            $mail->isHTML(true);
-            $mail->Subject = $subject;
+        //     $mail->isHTML(true);
+        //     $mail->Subject = $subject;
 
-            $mail->Body = $body;
+        //     $mail->Body = $body;
 
-            $mail->send();
+        //     $mail->send();
 
-            if ($redirect) {
-                return redirect()->route($redirect);
-            }
+        //     if ($redirect) {
+        //         return redirect()->route($redirect);
+        //     }
 
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
+        //     return true;
+        // } catch (Exception $e) {
+        //     return false;
+        // }
     }
 
     /**
@@ -127,11 +132,10 @@ class UserController extends Controller
 
         $Subject = "DiplomaSucces - Account aanmaken";
 
-        $Body = file_get_contents("http://templates.codecove.nl/diplomasuccess_password_email_setup.html");
-        $Body = str_replace("[[VOORNAAM]]", $FirstName, $Body);
-        $Body = str_replace("[[TOKEN]]", $PwSetToken, $Body);
+        
+    
 
-        $this->SendEmail($Email, $Subject, $Body, "login");
+        $this->SendEmail($Email, $Subject, "login");
     }
 
     /**
