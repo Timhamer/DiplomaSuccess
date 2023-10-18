@@ -66,9 +66,9 @@ class UserController extends Controller
         return view('AddAccount');
     }
 
-    private function SendEmail($to)
+    private function SendEmail($user)
     {
-        Mail::to($to)->send(new WelcomeEmail());
+        Mail::to($user->email)->send(new WelcomeEmail($user));
         return redirect()->route('adduser')->with('success', 'Account is aangemaakt.');
     }
 
@@ -126,7 +126,7 @@ class UserController extends Controller
 
         $user->save();
 
-        $this->SendEmail($Email);
+        $this->SendEmail($user);
     }
 
     /**

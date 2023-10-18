@@ -13,14 +13,21 @@ class WelcomeEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $user;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
+    public function build()
+    {
+        return $this->from('noreply@scrumapp.nl', 'noreply')
+            ->subject('Voltooi uw registratie')
+            ->view('emails.welcome');
+    }
     /**
      * Get the message envelope.
      */
@@ -28,6 +35,7 @@ class WelcomeEmail extends Mailable
     {
         return new Envelope(
             subject: 'Welcome Email',
+            
         );
     }
 
@@ -38,6 +46,7 @@ class WelcomeEmail extends Mailable
     {
         return new Content(
             view: 'emails.welcome',
+            
         );
     }
 
