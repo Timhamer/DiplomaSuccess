@@ -3,6 +3,18 @@
 @section('content')
     <div class="container">
         <h1>Nieuwe gebruiker aanmaken</h1>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    <!-- Loop through errors -->
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                    <!-- End loop -->
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{route('createuser')}}">
             @csrf
             <div class="form-group">
@@ -32,7 +44,7 @@
             </div>
             <div class="form-group">
                 <label for="email">Tussenvoegsel</label>
-                <input type="text" name="middlename" class="form-control" required>
+                <input type="text" name="middlename" class="form-control">
             </div>
             <div class="form-group">
                 <label for="email">Achternaam</label>

@@ -69,54 +69,7 @@ class UserController extends Controller
     private function SendEmail($to)
     {
         Mail::to($to)->send(new WelcomeEmail());
-        // require base_path("vendor/autoload.php");
-        // $mail = new PHPMailer(true);
-
-        // try {
-        //     $mail->SMTPDebug = 0;
-        //     $mail->isSMTP();
-        //     $mail->Host = "smtp.office365.com";
-        //     $mail->SMTPAuth = true;
-        //     $mail->Username = "idee-print@hotmail.com";
-        //     $mail->Password = "eL75@I#f@RZFa7CWT0X7kHl";
-        //     $mail->SMTPSecure = "tls";
-        //     $mail->Port = 587;
-
-        //     $mail->setFrom($mail->Username, "");
-        //     $mail->addAddress($to);
-
-        //     $mail->isHTML(true);
-        //     $mail->Subject = $subject;
-
-        //     $mail->Body = $body;
-
-        //     $mail->send();
-
-        //     if ($redirect) {
-        //         return redirect()->route($redirect);
-        //     }
-
-        //     return true;
-        // } catch (Exception $e) {
-        //     return false;
-        // }
-    }
-
-    public function IsValidType($Value, $Filter)
-    {
-        if (filter_var($Value, $Filter)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public function IsValidName($Name)
-    {
-        if (is_string($Name) && preg_match('/^[a-zA-Z]{2,20}$/', $Name)) {
-            return true;
-        } else {
-            return false;
-        }
+        return redirect()->route('adduser')->with('success', 'Account is aangemaakt.');
     }
 
     /**
@@ -132,20 +85,21 @@ class UserController extends Controller
         $MiddleName = $request->middlename;
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
             'studentnumber' => 'required|numeric',
             'role' => 'required|in:student,docent',
-            'firstname' => 'required|string',
-            'middlename' => 'required|string',
-            'lastname' => 'required|string',
+            'firstname' => 'required|string|max:20',
+            'middlename' => 'nullable|string|max:20',
+            'lastname' => 'required|string|max:20',
         ]);
-    
+
         if ($validator->fails()) {
             return redirect()
-                ->route('your-form-route-name') // Replace with your actual route name
+                ->route('adduser')
                 ->withErrors($validator)
                 ->withInput();
         }
+
         $PwSetToken = bin2hex(random_bytes(16));
         $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
 
@@ -154,7 +108,7 @@ class UserController extends Controller
         } else {
             $Role = 2;
         }
-        
+
         do {
             $PwSetToken = bin2hex(random_bytes(16));
             $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
