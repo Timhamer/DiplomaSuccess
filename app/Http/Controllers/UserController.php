@@ -7,11 +7,12 @@ use Exception;
 use App\Models\User;
 use App\RandomString;
 use App\Mail\WelcomeEmail;
+use App\RandomStringModel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\Mail;
-use App\RandomStringModel;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -130,25 +131,21 @@ class UserController extends Controller
         $LastName = $request->lastname;
         $MiddleName = $request->middlename;
 
-        if (!$this->IsValidType($Email, FILTER_VALIDATE_EMAIL)) {
-            return redirect()->back()->with('error', 'Emailadres is onjuist.');
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'studentnumber' => 'required|numeric',
+            'role' => 'required|in:student,docent',
+            'firstname' => 'required|string',
+            'middlename' => 'required|string',
+            'lastname' => 'required|string',
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()
+                ->route('your-form-route-name') // Replace with your actual route name
+                ->withErrors($validator)
+                ->withInput();
         }
-        if (!$this->IsValidType($Studentnumber, FILTER_VALIDATE_INT)) {
-            return redirect()->back()->with('error', 'Studentnummer is onjuist.');
-        }
-        if ($Role != "student" && $Role != "docent") {
-            return redirect()->back()->with('error', 'Rol is onjuist.');
-        }
-        if (!$this->IsValidName($FirstName)) {
-            return redirect()->back()->with('error', 'Voornaam is onjuist.');
-        }
-        if (!$this->IsValidName($LastName)) {
-            return redirect()->back()->with('error', 'Achternaam is onjuist.');
-        }
-        if (!$this->IsValidName($MiddleName)) {
-            return redirect()->back()->with('error', 'Tussenvoegsel is onjuist.');
-        }
-
         $PwSetToken = bin2hex(random_bytes(16));
         $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
 
