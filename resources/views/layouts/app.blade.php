@@ -14,17 +14,18 @@
 </head>
 
 <body>
+    
+
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary navy-blue">
             <div class="container">
                 <a class="navbar-brand" href="home">DiplomaSucces
                     @auth
-
-                        @if (auth()->user()->hasRole('admin'))
-                        docentendashboard
-                        @elseif (auth()->user()->hasRole('student'))
-                        studentendashboard
-                        @endif
+                    @if (auth()->check() && auth()->user()->hasRole('1'))
+                    Docent
+                @elseif (auth()->check() && auth()->user()->hasRole('2'))
+                    Student
+                @endif
                     @endauth
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"

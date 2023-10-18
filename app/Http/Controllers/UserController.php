@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 
-use App\Mail\WelcomeEmail;
 use Exception;
 use App\Models\User;
+use App\RandomString;
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\Mail;
+use App\RandomStringModel;
 
 class UserController extends Controller
 {
@@ -62,7 +65,7 @@ class UserController extends Controller
         return view('AddAccount');
     }
 
-    private function SendEmail($to, $subject, $redirect)
+    private function SendEmail($to)
     {
         Mail::to($to)->send(new WelcomeEmail());
         // require base_path("vendor/autoload.php");
@@ -110,14 +113,17 @@ class UserController extends Controller
         $LastName = $request->lastname;
         $MiddleName = $request->middlename;
 
-        $PwSetToken = bin2hex(random_bytes(16));
-        $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
-
+        
         if ($Role == "student") {
             $Role = 1;
         } else {
             $Role = 2;
         }
+        
+        do {
+            $PwSetToken = bin2hex(random_bytes(16));
+            $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
+        } while (User::where('reset_token', $HashedPwSetToken)->exists());
 
         $user = new User;
         $user->email = $Email;
@@ -128,14 +134,10 @@ class UserController extends Controller
         $user->middle_name = $MiddleName;
         $user->reset_token = $HashedPwSetToken;
 
+
         $user->save();
 
-        $Subject = "DiplomaSucces - Account aanmaken";
-
-        
-    
-
-        $this->SendEmail($Email, $Subject, "login");
+        $this->SendEmail($Email);
     }
 
     /**
