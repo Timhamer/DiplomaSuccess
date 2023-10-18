@@ -14,20 +14,23 @@ class WelcomeEmail extends Mailable
     use Queueable, SerializesModels;
 
     protected $user;
+    protected $token;
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct($user, $token)
     {
         $this->user = $user;
+        $this->token = $token;
     }
 
     public function build()
-    {
-        return $this->from('noreply@scrumapp.nl', 'noreply')
-            ->subject('Voltooi uw registratie')
-            ->view('emails.welcome');
-    }
+{
+    return $this->from('noreply@diplomasucces.nl', 'noreply')
+        ->subject('Voltooi uw registratie')
+        ->view('emails.welcome')
+        ->with(['user' => $this->user, 'token' => $this->token]);
+}
     /**
      * Get the message envelope.
      */

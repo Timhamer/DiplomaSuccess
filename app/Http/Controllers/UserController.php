@@ -10,7 +10,9 @@ use App\Mail\WelcomeEmail;
 use App\RandomStringModel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PHPMailer\PHPMailer\PHPMailer;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,7 +70,7 @@ class UserController extends Controller
 
     private function SendEmail($user)
     {
-        Mail::to($user->email)->send(new WelcomeEmail($user));
+        // Mail::to($user->email)->send(new WelcomeEmail($user));
         // require base_path("vendor/autoload.php");
         // $mail = new PHPMailer(true);
 
@@ -123,57 +125,74 @@ class UserController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
-    {
-        $Email = $request->email;
-        $Studentnumber = $request->studentnumber;
-        $Role = $request->role;
-        $FirstName = $request->firstname;
-        $LastName = $request->lastname;
-        $MiddleName = $request->middlename;
+{
+    // Validate the request data
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'studentnumber' => 'required|numeric',
+        'role' => 'required|in:student,docent',
+        'firstname' => 'required|string',
+        'middlename' => 'required|string',
+        'lastname' => 'required|string',
+    ]);
 
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'studentnumber' => 'required|numeric',
-            'role' => 'required|in:student,docent',
-            'firstname' => 'required|string',
-            'middlename' => 'required|string',
-            'lastname' => 'required|string',
-        ]);
-    
-        if ($validator->fails()) {
-            return redirect()
-                ->route('your-form-route-name') // Replace with your actual route name
-                ->withErrors($validator)
-                ->withInput();
-        }
+    if ($validator->fails()) {
+        return redirect()
+            ->route('adduser') // Replace with your actual route name
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    // Generate a random unhashed token
+    $PwSetToken = bin2hex(random_bytes(16));
+
+    // Hash the token before storing it in the database
+    $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
+
+    // Determine the role
+    $Role = ($request->role === 'student') ? 1 : 2;
+
+    // Check if the hashed token already exists in the database
+    do {
         $PwSetToken = bin2hex(random_bytes(16));
         $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
+    } while (User::where('reset_token', $HashedPwSetToken)->exists());
 
-        if ($Role == "student") {
-            $Role = 1;
-        } else {
-            $Role = 2;
+    // Create a new user record with the hashed token
+    $user = new User;
+    $user->email = $request->email;
+    $user->student_id = $request->studentnumber;
+    $user->role = $Role;
+    $user->first_name = $request->firstname;
+    $user->last_name = $request->lastname;
+    $user->middle_name = $request->middlename;
+    $user->reset_token = $HashedPwSetToken;
+
+    $user->save();
+
+    // Send the email with the unhashed token
+    Mail::to($user->email)->send(new WelcomeEmail($user, $PwSetToken));
+
+    // Redirect or respond as needed
+    return redirect()->route('login'); // Replace with your actual success route
+}
+
+
+
+public function activateAccount($code) {
+    // Find the user with a matching hashed token
+    $users = User::all(); // Retrieve all users from the database
+
+    foreach ($users as $user) {
+        if (Hash::check($code, $user->reset_token)) {
+            // User found, $user will have the matching user
+            return view('ActivateAccount', compact('user'));
         }
-        
-        do {
-            $PwSetToken = bin2hex(random_bytes(16));
-            $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
-        } while (User::where('reset_token', $HashedPwSetToken)->exists());
-
-        $user = new User;
-        $user->email = $Email;
-        $user->student_id = $Studentnumber;
-        $user->role = $Role;
-        $user->first_name = $FirstName;
-        $user->last_name = $LastName;
-        $user->middle_name = $MiddleName;
-        $user->reset_token = $HashedPwSetToken;
-
-
-        $user->save();
-
-        $this->SendEmail($user);
     }
+
+    // Handle the case where the token doesn't match
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -204,7 +223,24 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+            $user = User::find($request->user_id);
+        
+            if ($user) {
+                $validatedData = $request->validate([
+                    'password' => 'required|confirmed|min:8', // Ensure password and confirmation match
+                ]);
+        
+                $user->password = Hash::make($validatedData['password']);
+                $user->save();
+        
+                // You can redirect the user to their profile or another page after setting the password.
+                return redirect()->route('login');
+            }
+        
+            // Handle the case where the user is not found.
+            return redirect()->route('login');
+        
+    
     }
 
     /**
@@ -215,3 +251,5 @@ class UserController extends Controller
         //
     }
 }
+
+
