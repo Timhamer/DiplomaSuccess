@@ -66,9 +66,9 @@ class UserController extends Controller
         return view('AddAccount');
     }
 
-    private function SendEmail($to)
+    private function SendEmail($user)
     {
-        Mail::to($to)->send(new WelcomeEmail());
+        Mail::to($user->email)->send(new WelcomeEmail($user));
         // require base_path("vendor/autoload.php");
         // $mail = new PHPMailer(true);
 
@@ -172,7 +172,7 @@ class UserController extends Controller
 
         $user->save();
 
-        $this->SendEmail($Email);
+        $this->SendEmail($user);
     }
 
     /**
