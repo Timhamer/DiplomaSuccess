@@ -20,14 +20,14 @@ class UserController extends Controller
     {
         if (session('user') == null) {
             return redirect()->route('login');
-        } 
+        }
             elseif (session('role') == 1) {
                                     return redirect()->route('stageoverzicht');
             } else {
                 return redirect()->route('adduser'); //placeholder, veranderen naar studentenoverzicht
             }
         }
-    
+
 
     public function createLogin()
     {
@@ -101,6 +101,23 @@ class UserController extends Controller
         // }
     }
 
+    public function IsValidType($Value, $Filter)
+    {
+        if (filter_var($Value, $Filter)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function IsValidName($Name)
+    {
+        if (is_string($Name) && preg_match('/^[a-zA-Z]{2,20}$/', $Name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -113,7 +130,28 @@ class UserController extends Controller
         $LastName = $request->lastname;
         $MiddleName = $request->middlename;
 
-        
+        if (!$this->IsValidType($Email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->back()->with('error', 'Emailadres is onjuist.');
+        }
+        if (!$this->IsValidType($Studentnumber, FILTER_VALIDATE_INT)) {
+            return redirect()->back()->with('error', 'Studentnummer is onjuist.');
+        }
+        if ($Role != "student" && $Role != "docent") {
+            return redirect()->back()->with('error', 'Rol is onjuist.');
+        }
+        if (!$this->IsValidName($FirstName)) {
+            return redirect()->back()->with('error', 'Voornaam is onjuist.');
+        }
+        if (!$this->IsValidName($LastName)) {
+            return redirect()->back()->with('error', 'Achternaam is onjuist.');
+        }
+        if (!$this->IsValidName($MiddleName)) {
+            return redirect()->back()->with('error', 'Tussenvoegsel is onjuist.');
+        }
+
+        $PwSetToken = bin2hex(random_bytes(16));
+        $HashedPwSetToken = password_hash($PwSetToken, PASSWORD_DEFAULT);
+
         if ($Role == "student") {
             $Role = 1;
         } else {
