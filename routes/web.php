@@ -27,5 +27,7 @@ Route::post('/FinishAccount', [UserController::class,'update'])->name('finishuse
 Route::get('/login', [UserController::class, 'createLogin'])->name('login');
 Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
 Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
+Route::get('/studentDashboard', [UserController::class, 'teacherRedirect'])->name('studentDashboard');
+
 
 

@@ -15,9 +15,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Courses;
 
 class UserController extends Controller
 {
+
+    function teacherRedirect(){
+        $courses = Courses::all();
+        return view('studentDashboard', compact('courses'));
+    }
 
     function homeRedirect(Request $request)
     {
@@ -27,7 +33,7 @@ class UserController extends Controller
             elseif (session('role') == 1) {
                                     return redirect()->route('stageoverzicht');
             } else {
-                return redirect()->route('adduser'); //placeholder, veranderen naar studentenoverzicht
+                return redirect()->route('studentDashboard');
             }
         }
 
@@ -224,23 +230,23 @@ public function activateAccount($code) {
     public function update(Request $request, User $user)
     {
             $user = User::find($request->user_id);
-        
+
             if ($user) {
                 $validatedData = $request->validate([
                     'password' => 'required|confirmed|min:8', // Ensure password and confirmation match
                 ]);
-        
+
                 $user->password = Hash::make($validatedData['password']);
                 $user->save();
-        
+
                 // You can redirect the user to their profile or another page after setting the password.
                 return redirect()->route('login');
             }
-        
+
             // Handle the case where the user is not found.
             return redirect()->route('login');
-        
-    
+
+
     }
 
     /**
