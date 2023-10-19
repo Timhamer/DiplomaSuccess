@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +32,4 @@ Route::get('/studentDashboard', [UserController::class, 'teacherRedirect'])->nam
 
 
 
+Route::get('/studentDash', [StudentController::class, 'index'])->name('studentDash');
