@@ -21,8 +21,20 @@ class UserController extends Controller
 {
 
     function teacherRedirect(){
+        $users = User::where('role', 1)->get();
         $courses = Courses::all();
-        return view('studentDashboard', compact('courses'));
+
+        foreach ($users as $user) {
+            $user->exams = DB::select('SELECT * FROM exams WHERE user_id = ?', [$user->id]);
+        }
+
+        foreach ($users as $user) {
+            foreach ($user->exams as $exam) {
+                $exam->course = DB::select('SELECT * FROM courses WHERE id = ?', [$exam->course_id])[0];
+            }
+        }
+
+        return view('studentDashboard', ['users' => $users, 'courses' => $courses]);
     }
 
     function homeRedirect(Request $request)
