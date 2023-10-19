@@ -1,5 +1,4 @@
 @extends('layouts.popup')
-@extends('layouts.app')
 
 <!DOCTYPE html>
 <html>

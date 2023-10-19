@@ -21,11 +21,7 @@
             <div class="container">
                 <a class="navbar-brand" href="home">DiplomaSucces
                    
-                    @if (session('user')->id == 1)
-                    <p>{{  session('user')->first_name }}  1</p>
-                @elseif (session('user')->id == 2)
-                <p>{{  session('user')->first_name}}  2</p>
-                @endif
+                    
                    
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
