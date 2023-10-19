@@ -31,7 +31,7 @@ class UserController extends Controller
             return redirect()->route('login');
         }
             elseif (session('role') == 1) {
-                                    return redirect()->route('stageoverzicht');
+                                    return redirect()->route('Home');
             } else {
                 return redirect()->route('studentDashboard');
             }
@@ -66,6 +66,12 @@ class UserController extends Controller
         }
     }
 
+    public function logout()
+    {
+
+        session(['user'=> null]);
+        return redirect()->route('login');
+    }
     /**
      * Display a listing of the resource.
      */

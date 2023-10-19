@@ -20,13 +20,13 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary navy-blue">
             <div class="container">
                 <a class="navbar-brand" href="home">DiplomaSucces
-                    @auth
-                    @if (Auth::user()->role == 1)
-                    {{ Auth::user()->first_name }}
-                @elseif (Auth::user()->role == 2)
-                {{ Auth::user()->first_name }}
+                   
+                    @if (session('user')->id == 1)
+                    <p>{{  session('user')->first_name }}  1</p>
+                @elseif (session('user')->id == 2)
+                <p>{{  session('user')->first_name}}  2</p>
                 @endif
-                    @endauth
+                   
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -38,8 +38,8 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="Home">Home</a>
                         </li>
-                        @auth
-                            @if (auth()->user()->hasRole('admin'))
+                        
+                            @if (session('user')->id == 2)
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="EditDocument">Wijzig documenten</a>
                                 </li>
@@ -47,13 +47,12 @@
                                     <a class="nav-link active" aria-current="page" href="AddAccount">Gebruiker toevoegen</a>
                                 </li>
                             @endif
-                        @endauth
                     </ul>
-                    {{-- <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
+                    <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" type="submit">Log uit</button>
-                    </form> --}}
+                    </form>
                 </div>
             </div>
         </nav>
