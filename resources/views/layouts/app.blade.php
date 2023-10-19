@@ -21,10 +21,10 @@
             <div class="container">
                 <a class="navbar-brand" href="home">DiplomaSucces
                     @auth
-                    @if (auth()->check() && auth()->user()->hasRole('1'))
-                    Docent
-                @elseif (auth()->check() && auth()->user()->hasRole('2'))
-                    Student
+                    @if (Auth::user()->role == 1)
+                    {{ Auth::user()->first_name }}
+                @elseif (Auth::user()->role == 2)
+                {{ Auth::user()->first_name }}
                 @endif
                     @endauth
                 </a>
@@ -36,15 +36,15 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="addGroup">Home</a>
+                            <a class="nav-link active" aria-current="page" href="Home">Home</a>
                         </li>
                         @auth
                             @if (auth()->user()->hasRole('admin'))
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="addLes">Wijzig documenten</a>
+                                    <a class="nav-link active" aria-current="page" href="EditDocument">Wijzig documenten</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="register">Gebruiker toevoegen</a>
+                                    <a class="nav-link active" aria-current="page" href="AddAccount">Gebruiker toevoegen</a>
                                 </li>
                             @endif
                         @endauth
