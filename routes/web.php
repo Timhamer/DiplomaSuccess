@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,4 @@ Route::post('/createuser', [UserController::class, 'create'])->name('createuser'
 Route::get('/login', [UserController::class, 'createLogin'])->name('login');
 Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
 Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
+Route::get('/studentDash', [StudentController::class, 'index'])->name('studentDash');
