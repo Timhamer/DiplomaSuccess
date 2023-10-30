@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,3 +39,5 @@ Route::post('/opleidingToevoegen', [TeacherController::class, 'opleidingToevoege
 
 
 Route::get('/studentDash', [StudentController::class, 'index'])->name('studentDash');
+
+Route::get('/examine', [ExamController::class, 'index'])->name('Examine');

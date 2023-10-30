@@ -12,8 +12,8 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $user = "user";
-        return view('Home', compact('user'));
+        $user = session('user');
+        return view('Exam', compact('user'));
     }
 
     /**
@@ -37,7 +37,7 @@ class ExamController extends Controller
      */
     public function show(Exam $exam)
     {
-        
+
     }
 
     /**
