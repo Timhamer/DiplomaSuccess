@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('workprocesses', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('coretask_id')->unsigned();
+            $table->string('name');
             $table->tinyInteger('definitive');
             $table->timestamps();
 
