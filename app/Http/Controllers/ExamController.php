@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Courses;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class ExamController extends Controller
     public function index()
     {
         $user = session('user');
-        return view('Exam', compact('user'));
+        $course  = Courses::all()->with('coretasks.workprocesses.tasks');
+
+        return view('Exam', compact('user', 'course'));
     }
 
     /**
