@@ -22,8 +22,12 @@ class UserController extends Controller
 
     function teacherRedirect(){
         $courses = Courses::all();
-        return view('studentDashboard', compact('courses'));
+
+        $docenten = User::where('role', 2)->get();
+
+        return view('studentDashboard', compact('courses', 'docenten'));
     }
+
 
     function homeRedirect(Request $request)
     {

@@ -1,6 +1,6 @@
-@extends('layouts.popup')
-
-<!DOCTYPE html>
+@extends('layouts.add-exam')
+@extends('layouts.add-course')
+    <!DOCTYPE html>
 <html>
 <head>
     <title>Popup Example</title>
@@ -10,6 +10,7 @@
 <body>
 <button class="btn btn-primary" id="showPopup">+</button>
 
+<button class="btn btn-primary" id="showCoursePopup">=</button>
 
 <!-- Include Bootstrap JS (jQuery and Popper.js are required for Bootstrap) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
