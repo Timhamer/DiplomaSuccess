@@ -34,3 +34,5 @@ Route::delete('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
 Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
 Route::get('/studentDashboard', [UserController::class, 'teacherRedirect'])->name('studentDashboard');
+
+Route::get('/examine', [ExamController::class, 'index'])->name('Examine');
