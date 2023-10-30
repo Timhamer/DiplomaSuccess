@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('coretask_id')->unsigned();
             $table->string('name');
-            $table->tinyInteger('definitive');
             $table->timestamps();
 
             $table->foreign('coretask_id')

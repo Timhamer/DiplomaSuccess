@@ -15,8 +15,8 @@ class WorkProcesses extends Seeder
     {
         DB::table('workprocesses')->insert([
             'coretask_id'       => '1',
-            'name'      => 'Realiseert software',
-            'code  ' => 'K1',
+            'name'      => 'Plant werkzaamheden en bewaakt de voortgang',
+            'definitive  ' => '',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('exam_id')->unsigned();
             $table->bigInteger('workprocess_id')->unsigned();
+            $table->tinyInteger('definitive');
             $table->string('feedback')->nullable();
             $table->integer('score')->nullable();
             $table->timestamps();
