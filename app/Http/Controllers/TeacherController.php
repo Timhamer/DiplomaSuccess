@@ -6,7 +6,6 @@ use App\Models\Courses;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use App\Models\Exam;
-use App\Models\Course;
 
 class TeacherController extends Controller
 {

@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary addbutton" id="showCoursePopup">+</button>
+                            <button type="button" class="btn btn-primary addbutton" id="showPopup">+</button>
                         </div>
 
                         <div class="col-sm-5">
