@@ -37,5 +37,22 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
             'reset_token' => bin2hex(random_bytes(16))
         ]);
+
+        DB::table('courses')->insert([
+            'name' => 'Software Developer',
+            'crebo' => '250604',
+            'definitive' => '1',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('exams')->insert([
+            'user_id' => '1',
+            'course_id' => '1',
+            'published' => '1',
+            'passed' => '1',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

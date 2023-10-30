@@ -21,11 +21,20 @@ class UserController extends Controller
 {
 
     function teacherRedirect(){
+        $users = User::where('role', 1)->get();
         $courses = Courses::all();
 
-        $docenten = User::where('role', 2)->get();
+        foreach ($users as $user) {
+            $user->exams = DB::select('SELECT * FROM exams WHERE user_id = ?', [$user->id]);
+        }
 
-        return view('studentDashboard', compact('courses', 'docenten'));
+        foreach ($users as $user) {
+            foreach ($user->exams as $exam) {
+                $exam->course = DB::select('SELECT * FROM courses WHERE id = ?', [$exam->course_id])[0];
+            }
+        }
+
+        return view('studentDashboard', ['users' => $users, 'courses' => $courses]);
     }
 
 
@@ -35,7 +44,7 @@ class UserController extends Controller
             return redirect()->route('login');
         }
             elseif (session('role') == 1) {
-                                    return redirect()->route('stageoverzicht');
+                                    return redirect()->route('Home');
             } else {
                 return redirect()->route('studentDashboard');
             }
@@ -70,6 +79,12 @@ class UserController extends Controller
         }
     }
 
+    public function logout()
+    {
+
+        session(['user'=> null]);
+        return redirect()->route('login');
+    }
     /**
      * Display a listing of the resource.
      */

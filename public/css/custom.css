@@ -1,0 +1,36 @@
+.addbutton {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+
+    background-color: #4CAF50;
+    border: none;
+}
+
+.addbutton:hover {
+    background-color: #3e8e41;
+}
+
+.addbutton:active {
+    background-color: #3e8e41;
+}
+
+.viewexambtn {
+    margin-left: auto;
+    display: block;
+
+    background-color: #5b616c;
+    border: none;
+}
+
+.viewexambtn:hover {
+    background-color: #222833;
+}
+
+.viewexambtn:active {
+    background-color: #13181f;
+}
+
+.examoverview {
+    padding: 12px 50px;
+}

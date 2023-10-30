@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +23,13 @@ Route::get('/adduser', [UserController::class, 'index'])->name('adduser');
 Route::post('/createuser', [UserController::class, 'create'])->name('createuser');
 Route::get('/ActivateAccount/{code}', [UserController::class, 'activateAccount'])->name('activateAccount');
 Route::post('/FinishAccount', [UserController::class,'update'])->name('finishuser');
+Route::get('/Home', [ExamController::class, 'index'])->name('Home');
+
 
 
 Route::get('/login', [UserController::class, 'createLogin'])->name('login');
+Route::delete('/logout', [UserController::class, 'logout'])->name('logout');
+
 Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
 Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
 Route::get('/studentDashboard', [UserController::class, 'teacherRedirect'])->name('studentDashboard');

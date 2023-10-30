@@ -20,13 +20,9 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary navy-blue">
             <div class="container">
                 <a class="navbar-brand" href="home">DiplomaSucces
-                    @auth
-                    @if (auth()->check() && auth()->user()->hasRole('1'))
-                    Docent
-                @elseif (auth()->check() && auth()->user()->hasRole('2'))
-                    Student
-                @endif
-                    @endauth
+                   
+                    
+                   
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -36,24 +32,23 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="addGroup">Home</a>
+                            <a class="nav-link active" aria-current="page" href="Home">Home</a>
                         </li>
-                        @auth
-                            @if (auth()->user()->hasRole('admin'))
+                        
+                            @if (session('user')->id == 2)
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="addLes">Wijzig documenten</a>
+                                    <a class="nav-link active" aria-current="page" href="EditDocument">Wijzig documenten</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="register">Gebruiker toevoegen</a>
+                                    <a class="nav-link active" aria-current="page" href="AddAccount">Gebruiker toevoegen</a>
                                 </li>
                             @endif
-                        @endauth
                     </ul>
-                    {{-- <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
+                    <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" type="submit">Log uit</button>
-                    </form> --}}
+                    </form>
                 </div>
             </div>
         </nav>
