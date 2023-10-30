@@ -16,7 +16,7 @@ class CoreTasksSeeder extends Seeder
         DB::table('coretasks')->insert([
             'course_id'       => '1',
             'name'      => 'Realiseert software',
-            'code  ' => 'K1',
+            'code' => 'K1',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -24,7 +24,7 @@ class CoreTasksSeeder extends Seeder
         DB::table('coretasks')->insert([
             'course_id'       => '1',
             'name'      => 'Werkt in een ontwikkelteam',
-            'code  ' => 'K2',
+            'code' => 'K2',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
