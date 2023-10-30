@@ -24,6 +24,8 @@ class UserController extends Controller
         $users = User::where('role', 1)->get();
         $courses = Courses::all();
 
+        $docenten = User::where('role', 2)->get();
+
         foreach ($users as $user) {
             $user->exams = DB::select('SELECT * FROM exams WHERE user_id = ?', [$user->id]);
         }
@@ -34,8 +36,9 @@ class UserController extends Controller
             }
         }
 
-        return view('studentDashboard', ['users' => $users, 'courses' => $courses]);
+        return view('studentDashboard', ['users' => $users, 'courses' => $courses, 'docenten' => $docenten]);
     }
+
 
     function homeRedirect(Request $request)
     {
