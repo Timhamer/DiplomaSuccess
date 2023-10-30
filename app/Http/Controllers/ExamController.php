@@ -11,13 +11,13 @@ class ExamController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $user = session('user');
-        $course  = Courses::all()->with('coretasks.workprocesses.tasks');
+public function index()
+{
+    $user = session('user');
+    $courses = Courses::with('coreTasks.workProcesses.tasks')->get(); // Eager load the relationships
 
-        return view('Exam', compact('user', 'course'));
-    }
+    return view('Exam', compact('user', 'courses'));
+}
 
     /**
      * Show the form for creating a new resource.
