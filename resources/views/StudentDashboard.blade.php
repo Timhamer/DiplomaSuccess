@@ -1,6 +1,6 @@
-@extends('layouts.popup')
-
-<!DOCTYPE html>
+@extends('layouts.add-exam')
+@extends('layouts.add-course')
+    <!DOCTYPE html>
 <html>
 <head>
     <title>Studenten dashboard</title>
