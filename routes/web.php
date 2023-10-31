@@ -41,4 +41,4 @@ Route::post('/opleidingToevoegen', [TeacherController::class, 'opleidingToevoege
 
 Route::get('/studentDash', [StudentController::class, 'index'])->name('studentDash');
 
-Route::get('/examine', [ExamController::class, 'index'])->name('Examine');
+Route::get('/examine/{id}', [ExamController::class, 'index'])->name('Examine');

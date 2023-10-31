@@ -11,10 +11,11 @@ class ExamController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index()
+public function index($id)
 {
     $user = session('user');
-    $courses = Courses::with('coreTasks.workProcesses.tasks')->get(); // Eager load the relationships
+    $courses = Courses::where('id', $id) // Add your where clause here
+    ->with('coreTasks.workProcesses.tasks')->get(); // Eager load the relationships
 
     return view('Exam', compact('user', 'courses'));
 }
