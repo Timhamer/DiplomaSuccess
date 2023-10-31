@@ -17,10 +17,13 @@
             <div class="my-3 p-3 bg-light">
                 <div class="row">
                     <div class="col-9">
-                        <h4>{{ $exam->name }}</h4>
+                        <h4>{{ $exam->course->name }}</h4>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-primary">Button</button>
+                        <a href="{{ route('Examine', ['id' => $exam->course->id]) }}">
+
+                            <button class="btn btn-primary">Button</button>
+                        </a>
                     </div>
                 </div>
             </div>

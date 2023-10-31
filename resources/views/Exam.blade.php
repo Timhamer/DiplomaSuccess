@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="container">
-    @foreach($courses[0]->coretasks as $coretask)
+    @foreach($courses[ ]->coretasks as $coretask)
         <div class="card-header kerntaak-header" data-toggle="collapse" data-target="#kerntaak-{{$coretask->id}}">
             <div class="row">
                 <div class="col-sm-11">
