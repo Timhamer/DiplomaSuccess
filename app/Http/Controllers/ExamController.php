@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Courses;
 use App\Models\Exam;
+use App\Models\Courses;
+use App\Models\Examiner;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
@@ -14,27 +15,40 @@ class ExamController extends Controller
     public function index($id)
     {
         $user = session('user');
-            if ($user->role == 1) {
-                $exam = Exam::where('id', $id)->where('user_id', $user->id)
-                    ->with('course.coreTasks.workProcesses.tasks')
-                    ->first();
-            } elseif ($user->role == 2) {
-                
-                $exam = Exam::all()
-                ->with(['examiner' => function ($query) {
-                    $query->where('user_id', '=', ); // Add your condition here
-                }])
+    
+        if ($user->role == 1) {
+            $exam = Exam::where('id', $id)
+                ->where('user_id', $user->id)
+                ->with('course.coreTasks.workProcesses.tasks')
                 ->first();
-            }
-
-            if ($exam) {
-                return view('Exam', compact('user', 'exam'));
-            } else {
+        } elseif ($user->role == 2) {
+            $exam = Exam::where('id', $id)
+                ->first();
+        } else {
+            // Handle other roles or invalid roles here
+            session(['user' => null]);
+            return redirect()->route('login');
+        }
+    
+        if (!$exam) {
+            session(['user' => null]);
+            return redirect()->route('login');
+        }
+    
+        if ($user->role == 2) {
+            $examiner = Examiner::where('user_id', $user->id)
+                ->where('exam_id', $exam->id)
+                ->first();
+    
+            if (!$examiner) {
                 session(['user' => null]);
                 return redirect()->route('login');
             }
-        
+        }
+    
+        return view('Exam', compact('user', 'exam'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -57,7 +71,6 @@ class ExamController extends Controller
      */
     public function show(Exam $exam)
     {
-
     }
 
     /**
