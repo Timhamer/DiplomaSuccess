@@ -5,13 +5,14 @@
 <head>
     <title>Studenten dashboard</title>
     {{--    <pre>--}}
-    {{--    {{ $courses[0]->coretasks }}--}}
     {{--    </pre>--}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+    @foreach ($courses as $course)
+
 <div class="container">
-    @foreach($courses[ ]->coretasks as $coretask)
+    @foreach($course->coretasks as $coretask)
         <div class="card-header kerntaak-header" data-toggle="collapse" data-target="#kerntaak-{{$coretask->id}}">
             <div class="row">
                 <div class="col-sm-11">
@@ -70,6 +71,8 @@
 
         </div>
     @endforeach
+    @endforeach
+
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
