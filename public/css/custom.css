@@ -38,8 +38,40 @@
 .card-header {
     padding: 12px 50px;
 
-    background-color: #8d949d;
+    background-color: #e0e0e0;
     border: none;
 }
 
+.werkproces-header {
+    width: 95%;
+    margin: 0 auto;
 
+    background-color: #efefef;
+}
+
+.taak {
+    width: 90%;
+    margin: 0 auto;
+
+    background-color: #fbfbfb;
+}
+
+.threeopt-radio {
+    margin: 0;
+}
+
+.threeopt-radio .btn {
+    background-color: #5b616c;
+}
+
+.threeopt-radio .active {
+    background-color: #3d4550;
+}
+
+input[type="radio"] {
+    visibility: hidden;
+}
+
+.threeopt-radio {
+    text-align: center !important;
+}
