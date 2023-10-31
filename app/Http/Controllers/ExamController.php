@@ -14,25 +14,26 @@ class ExamController extends Controller
     public function index($id)
     {
         $user = session('user');
-        $course = Courses::where('id', $id)
-            ->with('coreTasks.workProcesses.tasks')
-            ->first();
-    
-        if ($course) {
-            $exam = Exam::where('user_id', $user->id)
-                ->where('course_id', $course->id)
+            if ($user->role == 1) {
+                $exam = Exam::where('id', $id)->where('user_id', $user->id)
+                    ->with('course.coreTasks.workProcesses.tasks')
+                    ->first();
+            } elseif ($user->role == 2) {
+                
+                $exam = Exam::all()
+                ->with(['examiner' => function ($query) {
+                    $query->where('user_id', '=', ); // Add your condition here
+                }])
                 ->first();
-    
+            }
+
             if ($exam) {
-                return view('Exam', compact('user', 'course'));
+                return view('Exam', compact('user', 'exam'));
             } else {
                 session(['user' => null]);
                 return redirect()->route('login');
             }
-        } else {
-            session(['user' => null]);
-            return redirect()->route('login');
-        }
+        
     }
 
     /**

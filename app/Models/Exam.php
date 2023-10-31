@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Courses;
+use App\Models\Examiner;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,5 +19,10 @@ class Exam extends Model
 
     public function examiners() {
         return $this->belongsToMany(User::class, 'examiner', 'exam_id', 'user_id');
+    }
+
+    public function examiner()
+    {
+        return $this->belongsTo(Examiner::class);
     }
 }

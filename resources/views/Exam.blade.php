@@ -12,7 +12,7 @@
 @section('content')
 
     <div class="container">
-        @foreach($course->coretasks as $coretask)
+        @foreach($exam->course->coretasks as $coretask)
             <div class="card-header kerntaak-header" data-toggle="collapse" data-target="#kerntaak-{{$coretask->id}}">
                 <div class="row">
                     <div class="col-sm-11">
