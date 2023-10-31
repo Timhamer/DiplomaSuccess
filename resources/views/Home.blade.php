@@ -8,6 +8,8 @@
     <title>Bootstrap Rows of Divs</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+@section('content')
+
 <body>
 @foreach ($exams as $exam)
     
@@ -22,7 +24,7 @@
                     <div class="col-3">
                         <a href="{{ route('Examine', ['id' => $exam->course->id]) }}">
 
-                            <button class="btn btn-primary">Button</button>
+                            <button class="btn btn-primary">Bekijk</button>
                         </a>
                     </div>
                 </div>
@@ -38,3 +40,4 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+@endsection

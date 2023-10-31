@@ -11,14 +11,29 @@ class ExamController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index($id)
-{
-    $user = session('user');
-    $courses = Courses::where('id', $id) // Add your where clause here
-    ->with('coreTasks.workProcesses.tasks')->get(); // Eager load the relationships
-
-    return view('Exam', compact('user', 'courses'));
-}
+    public function index($id)
+    {
+        $user = session('user');
+        $course = Courses::where('id', $id)
+            ->with('coreTasks.workProcesses.tasks')
+            ->first();
+    
+        if ($course) {
+            $exam = Exam::where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->first();
+    
+            if ($exam) {
+                return view('Exam', compact('user', 'course'));
+            } else {
+                session(['user' => null]);
+                return redirect()->route('login');
+            }
+        } else {
+            session(['user' => null]);
+            return redirect()->route('login');
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
