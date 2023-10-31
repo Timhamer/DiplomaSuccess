@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('workprocess_id')->unsigned();
             $table->string('name');
             $table->tinyInteger('crucial');
+            $table->tinyInteger('type');
             $table->string('description')->nullable();
             $table->string('zero')->nullable();
             $table->string('one')->nullable();

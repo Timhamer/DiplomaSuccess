@@ -39,12 +39,14 @@
                                     $ButtonText = "";
 
                                     if ($exam->published == 1) {
-                                        $ButtonText = "Bekijk resultaat";
-                                    } else {
                                         $ButtonText = "Bekijk examen";
+                                    } else {
+                                        $ButtonText = "Beoordeel examen";
                                     }
                                     ?>
-                                <button type="button" class="btn btn-primary viewexambtn" data-toggle="modal" data-target="#exam-{{$exam->id}}">{{$ButtonText}}</button>
+                                    <a href="{{ route('Examine', ['id' => $exam->course->id]) }}">
+                                        <button type="button" class="btn btn-primary viewexambtn" data-toggle="modal" data-target="#exam-{{$exam->id}}">{{$ButtonText}}</button>
+                                    </a>
                             </div>
                         </div>
 
