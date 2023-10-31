@@ -34,3 +34,12 @@
 .examoverview {
     padding: 12px 50px;
 }
+
+.card-header {
+    padding: 12px 50px;
+
+    background-color: #8d949d;
+    border: none;
+}
+
+
