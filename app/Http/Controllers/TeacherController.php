@@ -27,7 +27,7 @@ class TeacherController extends Controller
             $exam->examiners()->attach($request->selected_teachers);
         }
 
-        return response()->json(['message' => 'Data saved successfully']);
+        return redirect()->back();
 
 
     }

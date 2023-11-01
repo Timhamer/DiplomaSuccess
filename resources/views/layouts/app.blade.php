@@ -18,11 +18,11 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary navy-blue">
             <div class="container">
                 @if (session('user')->id == 1)
-                <a class="navbar-brand" href="Home">DiplomaSucces</a>
+                <a class="navbar-brand" href="{{ route('Home') }}">DiplomaSucces</a>
                 @endif
 
                 @if (session('user')->id == 2)
-                <a class="navbar-brand" href="studentDashboard">DiplomaSucces</a>
+                <a class="navbar-brand" href="{{ route('studentDashboard') }}">DiplomaSucces</a>
                 @endif
                 <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -33,18 +33,18 @@
                         <!-- Other navigation links go here -->
                         @if (session('user')->id == 1)
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="Home">Home</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('Home') }}">Home</a>
                         </li>
                         @endif
                         @if (session('user')->id == 2)
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="studentDashboard">Home</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('studentDashboard') }}">Home</a>
                         </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="EditDocument">Wijzig documenten</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="AddAccount">Gebruiker toevoegen</a>
+                                <a class="nav-link active" aria-current="page" href="{{ route('adduser') }}">Gebruiker toevoegen</a>
                             </li>
                         @endif
                     </ul>

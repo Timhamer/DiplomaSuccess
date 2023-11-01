@@ -51,25 +51,25 @@
                                             @if ($task->type == 1)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option1">0
+                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">0
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">1
+                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">1
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">2
+                                                        <input type="radio" name="options" class="task-option" value="2" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">2
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">3
+                                                        <input type="radio" name="options" class="task-option" value="3" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">3
                                                     </label>
                                                 </div>
                                             @elseif ($task->type == 0)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option1">Ja
+                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">Nee
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">Nee
+                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">Ja
                                                     </label>
                                                 </div>
                                             @endif
@@ -89,6 +89,40 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function(){
+            console.log("Hi")
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.task-option').on('click', function() {
+                var selectedValue = $(this).val();
+                var examId = $(this).data('exam-id');
+                var taskId = $(this).data('task-id');
+                
+                $.ajax({
+                    type: 'POST',
+                    url: this.getAttribute('data-route'), // Update the URL to the route that will handle the submission
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        exam_id: examId,
+                        task_id: taskId,
+                        selected_value: selectedValue
+                    },
+                    success: function(response) {
+                        // Handle success response if needed
+                    },
+                    error: function(xhr) {
+                        // Handle error response if needed
+                    }
+                });
+            });
+        });
+    </script>
+    
 </body>
 </html>
 @endsection

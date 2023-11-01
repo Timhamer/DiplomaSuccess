@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Examiner extends Model
 {
     use HasFactory;
+    protected $table = 'examiner';
 
     // Define the 'exams' relationship (reverse of 'examiner' in 'Exam' model)
     public function exams()

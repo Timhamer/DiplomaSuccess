@@ -13,7 +13,7 @@ class ExaminerSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('coretasks')->insert([
+        DB::table('examiner')->insert([
             'exam_id'       => '1',
             'user_id'      => '2',
             'created_at' => now(),

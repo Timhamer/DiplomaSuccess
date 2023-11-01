@@ -34,7 +34,6 @@ Route::delete('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
 Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
 Route::get('/studentDashboard', [UserController::class, 'teacherRedirect'])->name('studentDashboard');
-Route::post('/examenToevoegen', [TeacherController::class, 'examenToevoegen'])->name('examenToevoegen');
 
 Route::post('/opleidingToevoegen', [TeacherController::class, 'opleidingToevoegen'])->name('opleidingToevoegen');
 
@@ -42,3 +41,8 @@ Route::post('/opleidingToevoegen', [TeacherController::class, 'opleidingToevoege
 Route::get('/studentDash', [StudentController::class, 'index'])->name('studentDash');
 
 Route::get('/examine/{id}', [ExamController::class, 'index'])->name('Examine');
+Route::post('/examenToevoegen', [TeacherController::class, 'examenToevoegen'])->name('examenToevoegen');
+Route::post('/examine/{id}', [ExamController::class, 'store'])->name('PostExamine');
+
+
+
