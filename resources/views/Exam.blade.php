@@ -51,25 +51,25 @@
                                             @if ($task->type == 1)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option1">0
+                                                        <input type="radio" name="{{$task->id}}_0" id="option1">0
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">1
+                                                        <input type="radio" name="{{$task->id}}_1" id="option2">1
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">2
+                                                        <input type="radio" name="{{$task->id}}_2" id="option2">2
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">3
+                                                        <input type="radio" name="{{$task->id}}_3" id="option2">3
                                                     </label>
                                                 </div>
                                             @elseif ($task->type == 0)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option1">Ja
+                                                        <input type="radio" name="{{$task->id}}_1" id="option1">Ja
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" id="option2">Nee
+                                                        <input type="radio" name="{{$task->id}}_0" id="option2">Nee
                                                     </label>
                                                 </div>
                                             @endif
