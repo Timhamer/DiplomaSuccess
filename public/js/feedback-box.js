@@ -32,23 +32,24 @@ async function FeedbackBox() {
     })
 
     if (text) {
-        // Send feedback to server using normal JS.
-        fetch('/feedback', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({feedback: text})
-        }).then(function (response) {
+        // Check if text is not empty
+    $.ajax({
+        type: 'POST',
+        url: '/feedback', // Update the URL to your feedback endpoint
+        contentType: 'application/json',
+        data: JSON.stringify({ feedback: text }),
+        success: function(response) {
             if (response.status === 200) {
-                Feedback('Feedback verzonden', 'success')
+                Feedback('Feedback verzonden', 'success');
             } else {
-                Feedback('Feedback niet verzonden', 'error')
+                Feedback('Feedback niet verzonden', 'error');
             }
-            })
+        },
+        error: function() {
+            Feedback('Feedback niet verzonden', 'error');
         }
-    else
-        {
-            Feedback('Geen feedback ingevoerd', 'error')
-        }
-    }
+    });
+} else {
+    Feedback('Geen feedback ingevoerd', 'error');
+}}
+
