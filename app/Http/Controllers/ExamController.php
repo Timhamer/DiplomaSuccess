@@ -15,7 +15,7 @@ class ExamController extends Controller
     public function index($id)
     {
         $user = session('user');
-    
+
         if ($user->role == 1) {
             $exam = Exam::where('id', $id)
                 ->where('user_id', $user->id)
@@ -29,26 +29,51 @@ class ExamController extends Controller
             session(['user' => null]);
             return redirect()->route('login');
         }
-    
+
         if (!$exam) {
             session(['user' => null]);
             return redirect()->route('login');
         }
-    
+
         if ($user->role == 2) {
             $examiner = Examiner::where('user_id', $user->id)
                 ->where('exam_id', $exam->id)
                 ->first();
-    
+
             if (!$examiner) {
                 session(['user' => null]);
                 return redirect()->route('login');
             }
         }
-    
+
         return view('Exam', compact('user', 'exam'));
     }
-    
+
+    public function feedback(Request $request)
+    {
+        echo "<script>console.log('a')</script>";
+        echo "<script>console.log('Debug Objects: " . $request->feedback . "' );</script>";
+
+        $user = session('user');
+
+        if ($user->role != 2) {
+            session(['user' => null]);
+            return redirect()->route('login');
+        } else {
+            $examiner = Examiner::where('user_id', $user->id)
+                ->where('exam_id', $request->exam_id)
+                ->first();
+
+            if (!$examiner) {
+                session(['user' => null]);
+                return redirect()->route('login');
+            } else {
+                // Update the feedback row in the exam_work_process table
+                $examiner->feedback = $request->feedback;
+                $examiner->save();
+            }
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
