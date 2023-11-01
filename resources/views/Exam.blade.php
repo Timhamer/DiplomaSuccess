@@ -41,39 +41,37 @@
                     <div class="collapse" id="workprocess-{{$workprocess->id}}">
                         @foreach($workprocess->tasks as $task)
                             <div class="row taak">
-                                <div class="col-sm-10">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <!-- Place your label on the left -->
-                                            <label for="task">{{$task->name}}</label>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @if ($task->type == 1)
-                                                <div class="btn-group threeopt-radio" data-toggle="buttons">
-                                                    <label class="btn">
-                                                        <input type="radio" name="{{$task->id}}_0" id="option1">0
-                                                    </label>
-                                                    <label class="btn">
-                                                        <input type="radio" name="{{$task->id}}_1" id="option2">1
-                                                    </label>
-                                                    <label class="btn">
-                                                        <input type="radio" name="{{$task->id}}_2" id="option2">2
-                                                    </label>
-                                                    <label class="btn">
-                                                        <input type="radio" name="{{$task->id}}_3" id="option2">3
-                                                    </label>
-                                                </div>
-                                            @elseif ($task->type == 0)
-                                                <div class="btn-group threeopt-radio" data-toggle="buttons">
-                                                    <label class="btn">
-                                                        <input type="radio" name="{{$task->id}}_1" id="option1">Ja
-                                                    </label>
-                                                    <label class="btn">
-                                                        <input type="radio" name="{{$task->id}}_0" id="option2">Nee
-                                                    </label>
-                                                </div>
-                                            @endif
-                                        </div>
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <!-- Place your label on the left -->
+                                        <label for="task">{{$task->name}}</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @if ($task->type == 1)
+                                            <div class="btn-group threeopt-radio" data-toggle="buttons">
+                                                <label class="btn">
+                                                    <input type="radio" name="{{$task->id}}_0" id="option1">0
+                                                </label>
+                                                <label class="btn">
+                                                    <input type="radio" name="{{$task->id}}_1" id="option2">1
+                                                </label>
+                                                <label class="btn">
+                                                    <input type="radio" name="{{$task->id}}_2" id="option2">2
+                                                </label>
+                                                <label class="btn">
+                                                    <input type="radio" name="{{$task->id}}_3" id="option2">3
+                                                </label>
+                                            </div>
+                                        @elseif ($task->type == 0)
+                                            <div class="btn-group threeopt-radio" data-toggle="buttons">
+                                                <label class="btn">
+                                                    <input type="radio" name="{{$task->id}}_1" id="option1">Ja
+                                                </label>
+                                                <label class="btn">
+                                                    <input type="radio" name="{{$task->id}}_0" id="option2">Nee
+                                                </label>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

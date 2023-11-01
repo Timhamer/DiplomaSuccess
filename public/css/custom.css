@@ -56,16 +56,20 @@
     background-color: #fbfbfb;
 }
 
+.taak .row {
+    margin-top: 10px;
+}
+
 .threeopt-radio {
-    margin: 0;
+    float: right;
 }
 
 .threeopt-radio .btn {
-    background-color: #5b616c;
+    background-color: #b8c9e6;
 }
 
 .threeopt-radio .active {
-    background-color: #3d4550;
+    background-color: #76849c;
 }
 
 input[type="radio"] {
