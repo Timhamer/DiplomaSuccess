@@ -46,3 +46,5 @@ Route::post('/examine/{id}', [ExamController::class, 'store'])->name('PostExamin
 
 
 
+
+Route::post('/feedback', [ExamController::class, 'feedback'])->name('feedback');
