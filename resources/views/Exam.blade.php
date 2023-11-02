@@ -144,6 +144,7 @@
                                             @endif
                                         </div>
 
+                                        <button class="btn btn-primary" onclick="FeedbackBox()">Feedback geven</button>
                                     </div>
                                 </div>
                             </div>
