@@ -116,28 +116,29 @@
                                             <label for="task">{{$task->name}}</label>
                                         </div>
                                         <div class="col-sm-6">
+                                                            
                                             @if ($task->type == 1)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}>{{  $task->zero }}
+                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}@endif>{{  $task->zero }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}>{{ $task->one }}
+                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}@endif>{{ $task->one }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="2" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 2 ? 'checked' : '' }}>{{ $task->two }}
+                                                        <input type="radio" name="options" class="task-option" value="2" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 2 ? 'checked' : '' }}@endif>{{ $task->two }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="3" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 3 ? 'checked' : '' }}>{{ $task->three }}
+                                                        <input type="radio" name="options" class="task-option" value="3" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 3 ? 'checked' : '' }}@endif>{{ $task->three }}
                                                     </label>
                                                 </div>
                                             @elseif ($task->type == 0)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}>Nee
+                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}@endif>Nee
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}>Ja
+                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}@endif>Ja
                                                     </label>
                                                 </div>
                                             @endif
