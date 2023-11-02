@@ -32,6 +32,14 @@
     .radio-buttons input[type="radio"] {
     margin-right: 5px;
     }
+
+    .werkproces-container {
+        margin: 5px;
+    }
+
+    .taak-container {
+        margin: 5px;
+    }
     </style>
     <script>
         $(document).ready(function () {
@@ -49,18 +57,34 @@
 
                 if (showFirstSet) {
                     radioButtons.append(`
-                    <label>
-                        <input type="radio" name="input" value="1" disabled> 1
-                    </label>
-                    <label>
-                        <input type="radio" name="input" value="2" disabled> 2
-                    </label>
-                    <label>
-                        <input type="radio" name="input" value="3" disabled> 3
-                    </label>
-                    <label>
-                        <input type="radio" name="input" value="4" disabled> 4
-                    </label>
+<!--                    <label>-->
+<!--                        <input type="radio" name="input" value="1" disabled> 1-->
+<!--                    </label>-->
+<!--                    <label>-->
+<!--                        <input type="radio" name="input" value="2" disabled> 2-->
+<!--                    </label>-->
+<!--                    <label>-->
+<!--                        <input type="radio" name="input" value="3" disabled> 3-->
+<!--                    </label>-->
+<!--                    <label>-->
+<!--                        <input type="radio" name="input" value="4" disabled> 4-->
+<!--                    </label>-->
+
+
+<label> 1
+<input type="text" name="beschrijving-1-${generateUniqueId()}" placeholder="beschrijving">
+</label>
+<label> 2
+<input type="text" name="beschrijving-2-${generateUniqueId()}" placeholder="beschrijving">
+</label>
+<label> 3
+<input type="text" name="beschrijving-3-${generateUniqueId()}" placeholder="beschrijving">
+</label>
+<label> 4
+<input type="text" name="beschrijving-4-${generateUniqueId()}" placeholder="beschrijving">
+</label>
+
+
                 `);
                 } else {
                     radioButtons.append(`
@@ -70,6 +94,8 @@
                     <label>
                         <input type="radio" name="input" value="0" disabled> Nee
                     </label>
+
+
                 `);
                 }
             }
@@ -82,6 +108,7 @@
                     <input type="text" name="werkproces-${generateUniqueId()}[]" placeholder="Werkproces">
                     <input type="number" name="grade-${generateUniqueId()}" placeholder="cijfer">
                     <button type="button" class="add-taak-button btn btn-info">Taak +</button>
+<button type="button" class="delete">Delete</button>
                     <div class="taak-container">
                         <!-- Initially, no Taak rows are visible -->
                     </div>
@@ -93,6 +120,11 @@
                 newWerkproces.find('.add-taak-button').on("click", function () {
                     addTaakRow(newWerkproces);
                 });
+
+                // Add a click event for the delete button
+                newWerkproces.on("click", ".delete", function () {
+                    werkprocesContainer.remove(); // Delete the Werkproces row
+                });
             }
 
             // Function to add a "Taak" row
@@ -102,6 +134,7 @@
                 newTaak.append(`
                     <input type="text" name="taak-${generateUniqueId()}[]" placeholder="Taak">
                     <button type="button" class="switch">Type</button>
+  <button type="button" class="delete">Delete</button>
                     <div class="radio-buttons">
                         <label>
                         <input type="radio" name="input" value="1" disabled> 1
@@ -127,6 +160,10 @@
                     showFirstSet = !showFirstSet;
                     toggleRadioButtons(newTaak.find('.radio-buttons'), showFirstSet);
                 });
+                // Add a click event for the delete button
+                newTaak.on("click", ".delete", function () {
+                    newTaak.remove(); // Delete the Taak row
+                });
             }
 
             // Add a "Kerntaak +" button click event
@@ -136,6 +173,7 @@
                     <div class='kerntaak-header'>
                         <input type='text' name="kerntaak-${generateUniqueId()}[]" placeholder='Kerntaak'>
                         <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button>
+<button type="button" class="delete">Delete</button>
                     </div>
                 `);
 
@@ -145,6 +183,11 @@
                 });
 
                 kerntaakContainer.append(newKerntaak);
+
+                // Add a click event for the delete button
+                newKerntaak.on("click", ".delete", function () {
+                    newKerntaak.remove(); // Delete the Kerntaak row
+                });
             });
         });
     </script>
