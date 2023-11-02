@@ -32,6 +32,7 @@ async function FeedbackBox() {
     })
 
     if (text) {
+<<<<<<< Updated upstream
         // Check if text is not empty
     $.ajax({
         type: 'POST',
@@ -53,3 +54,30 @@ async function FeedbackBox() {
     Feedback('Geen feedback ingevoerd', 'error');
 }}
 
+=======
+        // Send to server using ajax
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $.ajax({
+            type: 'POST',
+            url: '/feedback',
+            data: {
+                // Add the csrf token
+                'X-CSRFToken': csrftoken,
+                'feedback': text
+            },
+            success: function (data) {
+                if (data.success === true) {
+                    Feedback('Feedback verzonden', 'success')
+                } else {
+                    Feedback('Feedback niet verzonden', 'error')
+                }
+            },
+            error: function (data) {
+                Feedback('Feedback niet verzonden', 'error')
+            }
+        })
+    } else {
+        Feedback('Geen feedback ingevoerd', 'error')
+    }
+}
+>>>>>>> Stashed changes

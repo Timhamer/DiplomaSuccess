@@ -6,6 +6,7 @@ use App\Models\Exam;
 use App\Models\Courses;
 use App\Models\Examiner;
 use App\Models\ExamTask;
+use App\Models\ExamWorkprocess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -15,40 +16,50 @@ class ExamController extends Controller
      * Display a listing of the resource.
      */
     public function index($id, Request $request)
+<<<<<<< Updated upstream
 {
     $user = session('user');
 
+=======
+    {
+        $user = session('user');
+>>>>>>> Stashed changes
 
-    if ($user->role == 1) {
-        $exam = Exam::where('id', $id)
-            ->where('user_id', $user->id)
-            ->with('course.coreTasks.workProcesses.tasks')
-            ->first();
-    } elseif ($user->role == 2) {
-        $exam = Exam::where('id', $id)
-            ->first();
-    } else {
-        // Handle other roles or invalid roles here
-        session(['user' => null]);
-        return redirect()->route('login');
-    }
 
-    if (!$exam) {
-        session(['user' => null]);
-        return redirect()->route('login');
-    }
-
-    if ($user->role == 2) {
-        $examiner = Examiner::where('user_id', $user->id)
-            ->where('exam_id', $exam->id)
-            ->first();
-
-        if (!$examiner) {
+        if ($user->role == 1) {
+            $exam = Exam::where('id', $id)
+                ->where('user_id', $user->id)
+                ->with('course.coreTasks.workProcesses.tasks')
+                ->first();
+        } elseif ($user->role == 2) {
+            $exam = Exam::where('id', $id)
+                ->first();
+        } else {
+            // Handle other roles or invalid roles here
             session(['user' => null]);
             return redirect()->route('login');
         }
+
+        if (!$exam) {
+            session(['user' => null]);
+            return redirect()->route('login');
+        }
+
+        if ($user->role == 2) {
+            $examiner = Examiner::where('user_id', $user->id)
+                ->where('exam_id', $exam->id)
+                ->first();
+
+            if (!$examiner) {
+                session(['user' => null]);
+                return redirect()->route('login');
+            }
+        }
+
+        return view('Exam', compact('user', 'exam'));
     }
 
+<<<<<<< Updated upstream
     return view('Exam', compact('user', 'exam'));
 }
 
@@ -66,6 +77,40 @@ class ExamController extends Controller
         // Process $formData and save to the database
 
         // Redirect or return a response as needed
+=======
+    public function feedback(Request $request)
+    {
+        $feedback = $request->input('feedback');
+        $workprocess_id = $request->input('workprocess_id');
+        $exam_id = $request->input('exam_id');
+
+        // Check if a row exists with the given exam_id and task_id
+        $existingWorkprocessFeedback = ExamWorkprocess::where('workprocess_id', $workprocess_id)->where('exam_id', $exam_id)->first();
+
+        if ($existingWorkprocessFeedback) {
+            // If the row exists, update the answer column
+            $existingWorkprocessFeedback->feedback = $feedback;
+            $existingWorkprocessFeedback->save();
+
+            return response()->json([
+                'message' => 'Feedback replaced successfully',
+                'success' => true
+            ], 200);
+        } else {
+            // If the row does not exist, create a new one
+            $examWorkprocess = new ExamWorkprocess;
+            $examWorkprocess->exam_id = $exam_id;
+            $examWorkprocess->workprocess_id = $workprocess_id;
+            $examWorkprocess->feedback = $feedback;
+            $examWorkprocess->definitive = 0;
+            $examWorkprocess->save();
+
+            return response()->json([
+                'message' => 'Feedback saved successfully',
+                'success' => true
+            ], 200);
+        }
+>>>>>>> Stashed changes
     }
 
 
@@ -81,29 +126,29 @@ class ExamController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $examId = $request->input('exam_id');
-    $taskId = $request->input('task_id');
-    $selectedValue = $request->input('selected_value');
+    {
+        $examId = $request->input('exam_id');
+        $taskId = $request->input('task_id');
+        $selectedValue = $request->input('selected_value');
 
-    // Check if a row exists with the given exam_id and task_id
-    $existingExamTask = ExamTask::where('exam_id', $examId)->where('task_id', $taskId)->first();
+        // Check if a row exists with the given exam_id and task_id
+        $existingExamTask = ExamTask::where('exam_id', $examId)->where('task_id', $taskId)->first();
 
-    if ($existingExamTask) {
-        // If the row exists, update the answer column
-        $existingExamTask->answer = $selectedValue;
-        $existingExamTask->save();
-    } else {
-        // If the row does not exist, create a new one
-        $examTask = new ExamTask;
-        $examTask->exam_id = $examId;
-        $examTask->task_id = $taskId;
-        $examTask->answer = $selectedValue;
-        $examTask->save();
+        if ($existingExamTask) {
+            // If the row exists, update the answer column
+            $existingExamTask->answer = $selectedValue;
+            $existingExamTask->save();
+        } else {
+            // If the row does not exist, create a new one
+            $examTask = new ExamTask;
+            $examTask->exam_id = $examId;
+            $examTask->task_id = $taskId;
+            $examTask->answer = $selectedValue;
+            $examTask->save();
+        }
+
+        return redirect()->back();
     }
-
-    return redirect()->back();
-}
 
 
     /**
