@@ -34,6 +34,7 @@ Route::delete('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/loginUser', [UserController::class, 'loginUser'])->name('loginUser');
 Route::get('/homeRedirect', [UserController::class, 'homeRedirect'])->name('homeRedirect');
 Route::get('/studentDashboard', [UserController::class, 'teacherRedirect'])->name('studentDashboard');
+Route::post('/examenToevoegen', [TeacherController::class, 'examenToevoegen'])->name('examenToevoegen');
 
 Route::post('/opleidingToevoegen', [TeacherController::class, 'opleidingToevoegen'])->name('opleidingToevoegen');
 
@@ -48,3 +49,15 @@ Route::post('/examine/{id}', [ExamController::class, 'store'])->name('PostExamin
 
 
 Route::post('/feedback', [ExamController::class, 'feedback'])->name('feedback');
+
+Route::get('/editExam', [ExamController::class, 'EditExam'])->name('EditExam');
+Route::post('/save-form-data', 'FormController@saveFormData')->name('saveFormData');
+
+Route::get('/editExam', function () {
+    return view('editDocument', ['showFirstSet' => true]);
+});
+
+Route::post('/editExam', function () {
+    $showFirstSet = request('option') === 'yes';
+    return view('editDocument', compact('showFirstSet'));
+});

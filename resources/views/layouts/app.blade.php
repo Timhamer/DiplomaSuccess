@@ -8,9 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="{{ asset('js/app.js') }}"></script>
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+<script src="{{ asset('js/app.js') }}"></script>
+<link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <title>DiplomaSucces</title>
+    @stack('scripts')
 </head>
 
 <body>
