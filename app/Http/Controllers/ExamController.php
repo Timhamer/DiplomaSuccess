@@ -16,10 +16,9 @@ class ExamController extends Controller
      * Display a listing of the resource.
      */
     public function index($id, Request $request)
-<<<<<<< Updated upstream
-{
-    $user = session('user');
-    
+    {
+        $user = session('user');
+
 
         // if ($user->role == 1) {
         //     $exam = Exam::where('id', $id)
@@ -29,44 +28,42 @@ class ExamController extends Controller
 
         if ($user->role == 1) {
             $exam = Exam::where('id', $id)
-            ->where('user_id', $user->id)
-            ->with('course.coreTasks.workProcesses.tasks.taskValues')
-            ->first();
-        
-        // if ($exam) {
-        //     // You should check if the exam was found before using it
-        //     $taskValues = ExamTask::where('exam_id', $exam->id)->get();
-        
-        //     foreach ($taskValues as $taskValue) {
-        //         // Find the corresponding task in the exam's course, coreTasks, and workProcesses
-        //         $matchingTask = $exam->course->coreTasks
-        //             ->pluck('workProcesses')
-        //             ->flatten()
-        //             ->pluck('tasks')
-        //             ->flatten()
-        //             ->where('id', $taskValue->task_id)
-        //             ->first();
-        //             $matchingTask->answer = 6;
-        //             // dump($matchingTask);
-        //         // if ($matchingTask) {
-        //         //     // Bind the answer
-        //         // }
-        //     }
-        //     // dd($exam);
-        //     // $tasks = $exam->course->coreTasks->workProcesses->task;
-        // }
-        
-        
+                ->where('user_id', $user->id)
+                ->with('course.coreTasks.workProcesses.tasks.taskValues')
+                ->first();
 
-    
-    } elseif ($user->role == 2) {
-        $exam = Exam::where('id', $id)
-            ->first();
-    } else {
-        // Handle other roles or invalid roles here
-        session(['user' => null]);
-        return redirect()->route('login');
-    }
+            // if ($exam) {
+            //     // You should check if the exam was found before using it
+            //     $taskValues = ExamTask::where('exam_id', $exam->id)->get();
+
+            //     foreach ($taskValues as $taskValue) {
+            //         // Find the corresponding task in the exam's course, coreTasks, and workProcesses
+            //         $matchingTask = $exam->course->coreTasks
+            //             ->pluck('workProcesses')
+            //             ->flatten()
+            //             ->pluck('tasks')
+            //             ->flatten()
+            //             ->where('id', $taskValue->task_id)
+            //             ->first();
+            //             $matchingTask->answer = 6;
+            //             // dump($matchingTask);
+            //         // if ($matchingTask) {
+            //         //     // Bind the answer
+            //         // }
+            //     }
+            //     // dd($exam);
+            //     // $tasks = $exam->course->coreTasks->workProcesses->task;
+            // }
+
+
+        } elseif ($user->role == 2) {
+            $exam = Exam::where('id', $id)
+                ->first();
+        } else {
+            // Handle other roles or invalid roles here
+            session(['user' => null]);
+            return redirect()->route('login');
+        }
 
         if (!$exam) {
             session(['user' => null]);
@@ -87,11 +84,6 @@ class ExamController extends Controller
         return view('Exam', compact('user', 'exam'));
     }
 
-<<<<<<< Updated upstream
-    return view('Exam', compact('user', 'exam'));
-}
-
-
 
     public function editExam()
     {
@@ -105,7 +97,8 @@ class ExamController extends Controller
         // Process $formData and save to the database
 
         // Redirect or return a response as needed
-=======
+    }
+
     public function feedback(Request $request)
     {
         $feedback = $request->input('feedback');
@@ -138,7 +131,6 @@ class ExamController extends Controller
                 'success' => true
             ], 200);
         }
->>>>>>> Stashed changes
     }
 
 

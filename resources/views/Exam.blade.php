@@ -6,6 +6,72 @@
     <title>Studenten dashboard</title>
    {{-- <pre> @php var_dump($exam)@endphp </pre> --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function Feedback(Message, Type) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: Type,
+                title: Message
+            })
+        }
+
+        async function FeedbackBox() {
+            const {value: text} = await Swal.fire({
+                input: 'textarea',
+                inputLabel: 'Feedback',
+                inputPlaceholder: 'Typ je feedback hier...',
+                inputAttributes: {
+                    'aria-label': 'Type je feedback hier'
+                },
+                showCancelButton: true,
+
+                cancelButtonText: 'Annuleren',
+                confirmButtonText: 'Verzenden'
+            })
+
+            if (text) {
+                console.log(text)
+                $.ajax({
+                    type: 'POST',
+                    url: '/feedback',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        'feedback': text,
+                        'workprocess_id': 1,
+                        'exam_id': 1
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            Feedback('Feedback verzonden', 'success')
+                        } else {
+                            Feedback('Feedback niet verzonden', 'error')
+                        }
+                    },
+                    error: function (data) {
+                        Feedback('Feedback niet verzonden', 'error')
+                    }
+                })
+            } else {
+                Feedback('Geen feedback ingevoerd', 'error')
+            }
+        }
+
+    </script>
 </head>
 <body>
 @section('content')
@@ -76,7 +142,7 @@
                                                 </div>
                                             @endif
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -95,14 +161,14 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @if ($user->role == 2)
-        
+
     <script>
         $(document).ready(function() {
             $('.task-option').on('click', function() {
                 var selectedValue = $(this).val();
                 var examId = $(this).data('exam-id');
                 var taskId = $(this).data('task-id');
-                
+
                 $.ajax({
                     type: 'POST',
                     url: this.getAttribute('data-route'), // Update the URL to the route that will handle the submission
@@ -123,7 +189,7 @@
         });
         </script>
     @endif
-    
+
 </body>
 </html>
 @endsection

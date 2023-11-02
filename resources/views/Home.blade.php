@@ -98,8 +98,6 @@
                 </div>
             </div>
             @endforeach
-
-            <button class="btn btn-primary" onclick="FeedbackBox()">Feedback geven</button>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
