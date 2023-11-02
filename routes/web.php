@@ -42,3 +42,15 @@ Route::post('/opleidingToevoegen', [TeacherController::class, 'opleidingToevoege
 Route::get('/studentDash', [StudentController::class, 'index'])->name('studentDash');
 
 Route::get('/examine', [ExamController::class, 'index'])->name('Examine');
+
+Route::get('/editExam', [ExamController::class, 'EditExam'])->name('EditExam');
+Route::post('/save-form-data', 'FormController@saveFormData')->name('saveFormData');
+
+Route::get('/editExam', function () {
+    return view('editDocument', ['showFirstSet' => true]);
+});
+
+Route::post('/editExam', function () {
+    $showFirstSet = request('option') === 'yes';
+    return view('editDocument', compact('showFirstSet'));
+});

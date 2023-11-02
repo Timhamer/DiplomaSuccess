@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Exam;
 use Illuminate\Http\Request;
 
@@ -15,6 +14,21 @@ class ExamController extends Controller
         $user = session('user');
         return view('Exam', compact('user'));
     }
+
+    public function editExam()
+    {
+        return view('editDocument');
+    }
+
+    public function saveFormData(Request $request)
+    {
+        $formData = $request->all();
+
+        // Process $formData and save to the database
+
+        // Redirect or return a response as needed
+    }
+
 
     /**
      * Show the form for creating a new resource.
