@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class TaskResult extends Model
 {
     use HasFactory;
-    public function taskValues()
-    {
-        return $this->hasMany(ExamTask::class, 'task_id');
-    }
-
 }

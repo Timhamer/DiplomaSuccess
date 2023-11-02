@@ -19,11 +19,44 @@ class ExamController extends Controller
     $user = session('user');
     
 
-    if ($user->role == 1) {
-        $exam = Exam::where('id', $id)
+        // if ($user->role == 1) {
+        //     $exam = Exam::where('id', $id)
+        //     ->where('user_id', $user->id)
+        //     ->with('course.coreTasks.workProcesses.tasks.taskValues')
+        //     ->first();
+
+        if ($user->role == 1) {
+            $exam = Exam::where('id', $id)
             ->where('user_id', $user->id)
-            ->with('course.coreTasks.workProcesses.tasks')
+            ->with('course.coreTasks.workProcesses.tasks.taskValues')
             ->first();
+        
+        // if ($exam) {
+        //     // You should check if the exam was found before using it
+        //     $taskValues = ExamTask::where('exam_id', $exam->id)->get();
+        
+        //     foreach ($taskValues as $taskValue) {
+        //         // Find the corresponding task in the exam's course, coreTasks, and workProcesses
+        //         $matchingTask = $exam->course->coreTasks
+        //             ->pluck('workProcesses')
+        //             ->flatten()
+        //             ->pluck('tasks')
+        //             ->flatten()
+        //             ->where('id', $taskValue->task_id)
+        //             ->first();
+        //             $matchingTask->answer = 6;
+        //             // dump($matchingTask);
+        //         // if ($matchingTask) {
+        //         //     // Bind the answer
+        //         // }
+        //     }
+        //     // dd($exam);
+        //     // $tasks = $exam->course->coreTasks->workProcesses->task;
+        // }
+        
+        
+
+    
     } elseif ($user->role == 2) {
         $exam = Exam::where('id', $id)
             ->first();

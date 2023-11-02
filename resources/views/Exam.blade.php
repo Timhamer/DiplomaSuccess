@@ -4,8 +4,7 @@
 <html>
 <head>
     <title>Studenten dashboard</title>
-    {{--    <pre>--}}
-    {{--    </pre>--}}
+   {{-- <pre> @php var_dump($exam)@endphp </pre> --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -13,6 +12,8 @@
 
     <div class="container">
         @foreach($exam->course->coretasks as $coretask)
+
+        {{-- {{ dump($coretask->workprocesses[0]) }} --}}
             <div class="card-header kerntaak-header" data-toggle="collapse" data-target="#kerntaak-{{$coretask->id}}">
                 <div class="row">
                     <div class="col-sm-11">
@@ -40,6 +41,7 @@
 
                     <div class="collapse" id="workprocess-{{$workprocess->id}}">
                         @foreach($workprocess->tasks as $task)
+                        {{-- {{ dump($task) }} --}}
                             <div class="row taak">
                                 <div class="col-sm-10">
                                     <div class="row">
@@ -51,29 +53,30 @@
                                             @if ($task->type == 1)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">0
+                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}>{{  $task->zero }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">1
+                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}>{{ $task->one }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="2" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">2
+                                                        <input type="radio" name="options" class="task-option" value="2" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 2 ? 'checked' : '' }}>{{ $task->two }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="3" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">3
+                                                        <input type="radio" name="options" class="task-option" value="3" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 3 ? 'checked' : '' }}>{{ $task->three }}
                                                     </label>
                                                 </div>
                                             @elseif ($task->type == 0)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">Nee
+                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}>Nee
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}">Ja
+                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}>Ja
                                                     </label>
                                                 </div>
                                             @endif
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -91,6 +94,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @if ($user->role == 2)
+        
     <script>
         $(document).ready(function() {
             $('.task-option').on('click', function() {
@@ -116,7 +121,8 @@
                 });
             });
         });
-    </script>
+        </script>
+    @endif
     
 </body>
 </html>
