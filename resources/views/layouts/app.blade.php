@@ -15,35 +15,39 @@
 </head>
 
 <body>
-
-
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary navy-blue">
             <div class="container">
-                <a class="navbar-brand" href="home">DiplomaSucces
+                @if (session('user')->id == 1)
+                <a class="navbar-brand" href="{{ route('Home') }}">DiplomaSucces</a>
+                @endif
 
-
-
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                @if (session('user')->id == 2)
+                <a class="navbar-brand" href="{{ route('studentDashboard') }}">DiplomaSucces</a>
+                @endif
+                <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse custom-navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <!-- Other navigation links go here -->
+                        @if (session('user')->id == 1)
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="Home">Home</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('Home') }}">Home</a>
                         </li>
-
-                            @if (session('user')->id == 2)
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="EditDocument">Wijzig documenten</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="AddAccount">Gebruiker toevoegen</a>
-                                </li>
-                            @endif
+                        @endif
+                        @if (session('user')->id == 2)
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('studentDashboard') }}">Home</a>
+                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="EditDocument">Wijzig documenten</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ route('adduser') }}">Gebruiker toevoegen</a>
+                            </li>
+                        @endif
                     </ul>
                     <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
                         @csrf
@@ -65,3 +69,12 @@
 </body>
 
 </html>
+
+<script>
+// jQuery code to handle the menu button click
+$(document).ready(function () {
+    $(".navbar-toggler").click(function () {
+        $(".custom-navbar-collapse").toggleClass("show");
+    });
+});
+</script>

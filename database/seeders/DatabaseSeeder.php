@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         CourseSeeder::class,
         CoreTasksSeeder::class,
         WorkProcessesSeeder::class,
-        TasksSeeder::class
+        TasksSeeder::class,
+        ExaminerSeeder::class
             ]);
     }
 }

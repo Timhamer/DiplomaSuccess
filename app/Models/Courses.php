@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Courses extends Model
 {
     use HasFactory;
+
+    public function coreTasks()
+    {
+        return $this->hasMany(CoreTask::class, 'course_id');
+    }
 }

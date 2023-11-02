@@ -35,4 +35,47 @@
     padding: 12px 50px;
 }
 
-# For every child card in the 
+.card-header {
+    padding: 12px 50px;
+
+    background-color: #e0e0e0;
+    border: none;
+}
+
+.werkproces-header {
+    width: 95%;
+    margin: 0 auto;
+
+    background-color: #efefef;
+}
+
+.taak {
+    width: 90%;
+    margin: 0 auto;
+
+    background-color: #fbfbfb;
+}
+
+.taak .row {
+    margin-top: 10px;
+}
+
+.threeopt-radio {
+    float: right;
+}
+
+.threeopt-radio .btn {
+    background-color: #b8c9e6;
+}
+
+.threeopt-radio .active {
+    background-color: #76849c;
+}
+
+input[type="radio"] {
+    visibility: hidden;
+}
+
+.threeopt-radio {
+    text-align: center !important;
+}

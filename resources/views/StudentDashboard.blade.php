@@ -1,5 +1,6 @@
 @extends('layouts.add-exam')
 @extends('layouts.add-course')
+@extends('layouts.app')
     <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,8 @@
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+@section('content')
+
 <body>
 
 <div class="container">
@@ -36,12 +39,14 @@
                                     $ButtonText = "";
 
                                     if ($exam->published == 1) {
-                                        $ButtonText = "Bekijk resultaat";
-                                    } else {
                                         $ButtonText = "Bekijk examen";
+                                    } else {
+                                        $ButtonText = "Beoordeel examen";
                                     }
                                     ?>
-                                <button type="button" class="btn btn-primary viewexambtn" data-toggle="modal" data-target="#exam-{{$exam->id}}">{{$ButtonText}}</button>
+                                    <a href="{{ route('Examine', ['id' => $exam->course->id]) }}">
+                                        <button type="button" class="btn btn-primary viewexambtn" data-toggle="modal" data-target="#exam-{{$exam->id}}">{{$ButtonText}}</button>
+                                    </a>
                             </div>
                         </div>
 
@@ -81,3 +86,4 @@
 
 </body>
 </html>
+@endsection

@@ -20,11 +20,11 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/adduser', [UserController::class, 'index'])->name('adduser');
+Route::get('/AddAccount', [UserController::class, 'index'])->name('adduser');
 Route::post('/createuser', [UserController::class, 'create'])->name('createuser');
 Route::get('/ActivateAccount/{code}', [UserController::class, 'activateAccount'])->name('activateAccount');
 Route::post('/FinishAccount', [UserController::class,'update'])->name('finishuser');
-Route::get('/Home', [ExamController::class, 'index'])->name('Home');
+Route::get('/Home', [StudentController::class, 'index'])->name('Home');
 
 
 
@@ -41,7 +41,14 @@ Route::post('/opleidingToevoegen', [TeacherController::class, 'opleidingToevoege
 
 Route::get('/studentDash', [StudentController::class, 'index'])->name('studentDash');
 
-Route::get('/examine', [ExamController::class, 'index'])->name('Examine');
+Route::get('/examine/{id}', [ExamController::class, 'index'])->name('Examine');
+Route::post('/examenToevoegen', [TeacherController::class, 'examenToevoegen'])->name('examenToevoegen');
+Route::post('/examine/{id}', [ExamController::class, 'store'])->name('PostExamine');
+
+
+
+
+Route::post('/feedback', [ExamController::class, 'feedback'])->name('feedback');
 
 Route::get('/editExam', [ExamController::class, 'EditExam'])->name('EditExam');
 Route::post('/save-form-data', 'FormController@saveFormData')->name('saveFormData');

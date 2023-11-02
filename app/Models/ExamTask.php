@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class ExamTask extends Model
 {
     use HasFactory;
-    
+
+    protected $table = 'exam_task';
+    protected $fillable = ['exam_id', 'task_id', 'answer'];
 }

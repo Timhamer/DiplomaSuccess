@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Exam;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,10 @@ class StudentController extends Controller
      */
     public function index()
     {
+        $exams = Exam::where('user_id', session('user')->id)
+    ->with('course.coretasks.workprocesses.tasks')
+    ->get();
+        return view('Home', compact('exams'));
     }
 
     /**
