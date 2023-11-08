@@ -116,7 +116,7 @@
                                             <label for="task">{{$task->name}}</label>
                                         </div>
                                         <div class="col-sm-6">
-                                                            
+
                                             @if ($task->type == 1)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
@@ -143,13 +143,12 @@
                                                 </div>
                                             @endif
                                         </div>
-
-                                        <button class="btn btn-primary" onclick="FeedbackBox()">Feedback geven</button>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
 
+                            <button class="btn btn-primary wp-feedback-btn" onclick="FeedbackBox()">Feedback geven</button>
                     </div>
                 @endforeach
 

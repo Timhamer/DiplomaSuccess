@@ -46,7 +46,7 @@
     width: 95%;
     margin: 0 auto;
 
-    background-color: #efefef;
+    background-color: #e6e6e6;
 }
 
 .taak {
@@ -78,4 +78,16 @@ input[type="radio"] {
 
 .threeopt-radio {
     text-align: center !important;
+}
+
+.wp-feedback-btn {
+    margin: 10px auto;
+    display: block;
+
+    background-color: #5b616c;
+    border: none;
+}
+
+.wp-feedback-btn:hover {
+    background-color: #222833;
 }
