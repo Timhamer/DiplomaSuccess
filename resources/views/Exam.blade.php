@@ -44,16 +44,18 @@
                 confirmButtonText: 'Verzenden'
             })
 
+            var workprocess_id = event.target.id;
+            var exam_id = event.target.name;
+
             if (text) {
-                console.log(text)
                 $.ajax({
                     type: 'POST',
                     url: '/feedback',
                     data: {
                         _token: '{{csrf_token()}}',
                         'feedback': text,
-                        'workprocess_id': 1,
-                        'exam_id': 1
+                        'workprocess_id': workprocess_id,
+                        'exam_id': exam_id
                     },
                     success: function (data) {
                         if (data.success === true) {
@@ -106,6 +108,8 @@
                     </div>
 
                     <div class="collapse" id="workprocess-{{$workprocess->id}}">
+                        <hr class="wp-feedback-hr">
+
                         @foreach($workprocess->tasks as $task)
                         {{-- {{ dump($task) }} --}}
                             <div class="row taak">
@@ -147,8 +151,10 @@
                                 </div>
                             </div>
                         @endforeach
+                            <hr class="wp-feedback-hr">
+                            <button class="btn btn-primary wp-feedback-btn" id="{{$workprocess->id}}" name="{{$exam->id}}" onclick="FeedbackBox()">Feedback geven</button>
+                            <hr class="wp-feedback-hr">
 
-                            <button class="btn btn-primary wp-feedback-btn" onclick="FeedbackBox()">Feedback geven</button>
                     </div>
                 @endforeach
 

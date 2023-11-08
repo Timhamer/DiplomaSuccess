@@ -91,3 +91,10 @@ input[type="radio"] {
 .wp-feedback-btn:hover {
     background-color: #222833;
 }
+
+.wp-feedback-hr {
+    margin: 10px auto;
+    width: 90%;
+
+    color: #676767;
+}
