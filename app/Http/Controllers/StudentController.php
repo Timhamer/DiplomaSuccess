@@ -13,10 +13,16 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $exams = Exam::where('user_id', session('user')->id)
-    ->with('course.coretasks.workprocesses.tasks')
-    ->get();
-        return view('Home', compact('exams'));
+        // If the user is logged in, show the home page
+        if (session('user') == null) {
+            return redirect()->route('login');
+        } else {
+            $exams = Exam::where('user_id', session('user')->id)
+                ->with('course.coretasks.workprocesses.tasks')
+                ->get();
+
+            return view('Home', compact('exams'));
+        }
     }
 
     /**

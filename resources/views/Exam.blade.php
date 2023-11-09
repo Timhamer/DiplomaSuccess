@@ -77,7 +77,6 @@
 </head>
 <body>
 @section('content')
-
     <div class="container">
         @foreach($exam->course->coretasks as $coretask)
 
@@ -111,12 +110,10 @@
                         <hr class="wp-feedback-hr">
 
                         @foreach($workprocess->tasks as $task)
-                        {{-- {{ dump($task) }} --}}
                             <div class="row taak">
                                 <div class="col-sm-10">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <!-- Place your label on the left -->
                                             <label for="task">{{$task->name}}</label>
                                         </div>
                                         <div class="col-sm-6">
