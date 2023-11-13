@@ -32,6 +32,49 @@
             })
         }
 
+        async function ConfirmBox() {
+            const {value: accept} = await Swal.fire({
+                title: "<strong>Weet je zeker dat je het examen in wilt zien?</strong>",
+                icon: "warning",
+                html: `
+                    Als je verder gaat dan ga je akkoord met de <a href="/terms">algemene voorwaarden</a>. <br>
+                    <b>Je kunt niet meer terug na dit punt.</b>
+                  `,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: `
+                    Examen inzien
+                  `,
+                cancelButtonText: `
+                    Annuleren
+                  `
+            });
+
+            if (accept) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/see_exam',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        'exam_id': 1
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            console.log(data)
+                        } else {
+                            Feedback('Server error bij inzien van examen', 'error')
+                        }
+                    },
+                    error: function (data) {
+                        Feedback('Client error bij inzien van examen', 'error')
+                    }
+                })
+            } else {
+                Feedback('Examen inzien geannuleerd', 'info')
+            }
+        }
+
         async function FeedbackBox() {
             const {value: text} = await Swal.fire({
                 input: 'textarea',
@@ -99,6 +142,8 @@
             </div>
             @endforeach
         </div>
+
+        <button class="btn btn-primary" onclick="ConfirmBox()">Confirm knop</button>
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

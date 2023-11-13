@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('viewed_at')->nullable();
             $table->tinyInteger('published');
             $table->tinyInteger('passed');
+            $table->text('signature')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

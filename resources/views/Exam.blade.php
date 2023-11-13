@@ -30,13 +30,15 @@
             })
         }
 
-        async function FeedbackBox() {
+        async function FeedbackBox(Placeholder) {
+            Placeholder = Placeholder || 'Typ je feedback hier...';
+
             const {value: text} = await Swal.fire({
                 input: 'textarea',
                 inputLabel: 'Feedback',
-                inputPlaceholder: 'Typ je feedback hier...',
+                inputPlaceholder: Placeholder,
                 inputAttributes: {
-                    'aria-label': 'Type je feedback hier'
+                    'aria-label': Placeholder
                 },
                 showCancelButton: true,
 

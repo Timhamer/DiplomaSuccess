@@ -84,6 +84,28 @@ class ExamController extends Controller
         return view('Exam', compact('user', 'exam'));
     }
 
+    public function see_exam(Request $request)
+    {
+        $ExamId = $request->input('exam_id');
+        $UserId = session('user')->id;
+
+        $existingExam = Exam::where('id', $ExamId)->where('user_id', $UserId)->where('published', 1)->first();
+
+        if ($existingExam) {
+            $existingExam->viewed_at = now();
+            $existingExam->save();
+        } else {
+            return response()->json([
+                'message' => 'Exam ID and User ID mismatch',
+                'success' => false
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Exam viewed successfully',
+            'success' => true
+        ], 200);
+    }
 
     public function editExam()
     {
