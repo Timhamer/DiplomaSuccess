@@ -16,6 +16,10 @@ class ExamController extends Controller
      * Display a listing of the resource.
      */
     public function index($id, Request $request)
+{
+    $user = session('user');
+
+
     {
         $user = session('user');
 
@@ -109,13 +113,15 @@ class ExamController extends Controller
 
     public function editExam()
     {
-        return view('editDocument');
+        $courses = Courses::with('coretasks.workprocesses.tasks')
+            ->get();
+        return view('editDocument', compact('courses'));
     }
 
     public function saveFormData(Request $request)
     {
         $formData = $request->all();
-
+    }
         // Process $formData and save to the database
 
         // Redirect or return a response as needed
