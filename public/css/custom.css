@@ -1,3 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
+
+body {
+    color: white;
+    background-color: #2b2f34;
+
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+
+input {
+    background-color: #1f242b !important;
+    border-color: #101a27 !important;
+}
+
+.navbar {
+    background-color: #1f242b !important;
+    margin-bottom: 50px;
+}
+
+.bg-light {
+    background-color: #1f242b !important;
+}
+
+.navbar a {
+    color: white !important;
+}
+
 .addbutton {
     position: absolute;
     left: 50%;
@@ -38,7 +66,7 @@
 .card-header {
     padding: 12px 50px;
 
-    background-color: #e0e0e0;
+    background-color: #1f242b;
     border: none;
 }
 
@@ -46,14 +74,14 @@
     width: 95%;
     margin: 0 auto;
 
-    background-color: #e6e6e6;
+    background-color: #1f242b;
 }
 
 .taak {
     width: 90%;
     margin: 0 auto;
 
-    background-color: #fbfbfb;
+    background-color: #1f242b;
 }
 
 .taak .row {

@@ -16,9 +16,7 @@ use App\Http\Controllers\TeacherController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [StudentController::class, 'index'])->name('Home');
 
 Route::get('/AddAccount', [UserController::class, 'index'])->name('adduser');
 Route::post('/createuser', [UserController::class, 'create'])->name('createuser');
@@ -45,7 +43,7 @@ Route::get('/examine/{id}', [ExamController::class, 'index'])->name('Examine');
 Route::post('/examenToevoegen', [TeacherController::class, 'examenToevoegen'])->name('examenToevoegen');
 Route::post('/examine/{id}', [ExamController::class, 'store'])->name('PostExamine');
 
-
+Route::post("/see_exam", [ExamController::class, 'see_exam'])->name('see_exam');
 
 
 Route::post('/feedback', [ExamController::class, 'feedback'])->name('feedback');
