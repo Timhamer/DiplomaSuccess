@@ -1,4 +1,8 @@
 @extends('layouts.app')
+ <!-- Add these lines to include Bootstrap CSS and JavaScript files -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
 
 @section('content')
     <form id="dynamic-form" action="{{ route('saveFormData') }}" method="POST">
