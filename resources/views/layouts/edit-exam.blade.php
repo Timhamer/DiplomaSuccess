@@ -2,192 +2,189 @@
 
 @section('content')
     <form id="dynamic-form" action="{{ route('saveFormData') }}" method="POST">
-        @csrf <!-- Add CSRF token -->
+        @csrf
         <div id="form-container">
             <div id="kerntaak-container">
                 <!-- Initially, no Kerntaak rows are visible -->
             </div>
         </div>
         <button type="button" id="add-kerntaak-button" class="btn btn-primary mt-2">Kerntaak +</button>
-        <button type="submit" id="save-button" class="btn btn-success mt-2">Save</button> <!-- Add "Save" button -->
+        <button type="submit" id="save-button" class="btn btn-success mt-2">Save</button>
     </form>
+    <div id="total-value-container">
+        <!-- Display the total value here -->
+    </div>
 @endsection
 
 @push('scripts')
     <style>
-    .switch {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    }
-
-    .switch:hover {
-    background-color: #0056b3;
-    }
-
-
-    .radio-buttons input[type="radio"] {
-    margin-right: 5px;
-    }
-
-    .werkproces-container {
-        margin: 5px;
-    }
-
-    .taak-container {
-        margin: 5px;
-    }
+        /* Add your styles here */
     </style>
     <script>
-        $(document).ready(function () {
+       $(document).ready(function () {
             let showFirstSet = true;
             let kerntaakContainer = $('#kerntaak-container');
-            let inputIdCounter = 0; // Initialize a counter for unique input IDs
 
-            function generateUniqueId() {
-                inputIdCounter++;
-                return 'input-' + inputIdCounter; // Create a unique ID
+            function generateUniqueId(prefix, counter) {
+                counter++;
+                return `${prefix}-${counter}`;
             }
 
             function toggleRadioButtons(radioButtons, showFirstSet) {
-                radioButtons.empty();
+                // ... (unchanged)
+            }
 
-                if (showFirstSet) {
-                    radioButtons.append(`
-<!--                    <label>-->
-<!--                        <input type="radio" name="input" value="1" disabled> 1-->
-<!--                    </label>-->
-<!--                    <label>-->
-<!--                        <input type="radio" name="input" value="2" disabled> 2-->
-<!--                    </label>-->
-<!--                    <label>-->
-<!--                        <input type="radio" name="input" value="3" disabled> 3-->
-<!--                    </label>-->
-<!--                    <label>-->
-<!--                        <input type="radio" name="input" value="4" disabled> 4-->
-<!--                    </label>-->
+            function updateTotalValueInputs(totalValue, container, werkprocesId) {
+                container.empty();  // Clear previous inputs
+                const firstInputId = `total-value-${werkprocesId}-${0}`;
 
-
-<label> 1
-<input type="text" name="beschrijving-1-${generateUniqueId()}" placeholder="beschrijving">
-</label>
-<label> 2
-<input type="text" name="beschrijving-2-${generateUniqueId()}" placeholder="beschrijving">
-</label>
-<label> 3
-<input type="text" name="beschrijving-3-${generateUniqueId()}" placeholder="beschrijving">
-</label>
-<label> 4
-<input type="text" name="beschrijving-4-${generateUniqueId()}" placeholder="beschrijving">
-</label>
-
-
-                `);
-                } else {
-                    radioButtons.append(`
-                    <label>
-                        <input type="radio" name="input" value="1" disabled> Ja
-                    </label>
-                    <label>
-                        <input type="radio" name="input" value="0" disabled> Nee
-                    </label>
-
-
-                `);
+                const firstElement = `
+                        <label for="${firstInputId}">${0} punt:</label>
+                        <input type="text" id="${firstInputId}" name="${firstInputId}" value="1">
+                        <br>
+                    `;
+                    container.append(firstElement);
+                for (let i = 0; i < totalValue; i++) {
+                    const inputId = `total-value-${werkprocesId}-${i + 1}`;
+                    const value = (i+1)/totalValue*9+1;
+                    const inputElement = `
+                        <label for="${inputId}">${i + 1} punt:</label>
+                        <input type="text" id="${inputId}" name="${inputId}" value="${value}">
+                        <br>
+                    `;
+                    container.append(inputElement);
                 }
             }
 
-            // Function to add a "Werkproces" row
-            function addWerkprocesRow(kerntaakRow) {
+            function calculateTotalValue(werkprocesRow) {
+                let totalValue = 0;
+                
+                const cijferContainer = werkprocesRow.find('.cijfer-container');
+                werkprocesRow.find('.taak-row').each(function (index) {
+                    const type = parseInt($(this).find('input[name^="type"]').val());
+                    totalValue += type === 0 ? 3 : 1;
+                });
+
+                // Pass the Werkproces div's unique identifier to updateTotalValueInputs
+                updateTotalValueInputs(totalValue, cijferContainer, werkprocesRow.attr('id'));
+
+                return totalValue;
+            }
+
+            // Initial creation of the total value inputs
+
+            function updateTotalValue() {
+                let totalValue = 0;
+                kerntaakContainer.find('.werkproces-row').each(function () {
+                    totalValue += calculateTotalValue($(this));
+                });
+            }
+
+            function addWerkprocesRow(kerntaakRow, werkprocesCounter, gradeCounter) {
                 const werkprocesContainer = $("<div class='werkproces-container'></div>");
-                const newWerkproces = $("<div class='werkproces-row'></div>");
+                const newWerkproces = $(`<div class='werkproces-row' id="${generateUniqueId('werkproces', werkprocesCounter)}"></div>`);
                 newWerkproces.append(`
-                    <input type="text" name="werkproces-${generateUniqueId()}[]" placeholder="Werkproces">
-                    <input type="number" name="grade-${generateUniqueId()}" placeholder="cijfer">
+                    <input type="text" name="werkproces-${generateUniqueId('werkproces', werkprocesCounter)}[]" placeholder="Werkproces">
+                    <input type="number" name="grade-${generateUniqueId('grade', gradeCounter)}" placeholder="cijfer">
                     <button type="button" class="add-taak-button btn btn-info">Taak +</button>
-<button type="button" class="delete">Delete</button>
+                    <button type="button" class="delete">Delete</button>
                     <div class="taak-container">
+                        <!-- Initially, no Taak rows are visible -->
+                    </div>
+                    <div class="cijfer-container">
                         <!-- Initially, no Taak rows are visible -->
                     </div>
                 `);
                 werkprocesContainer.append(newWerkproces);
                 kerntaakRow.append(werkprocesContainer);
 
-                // Add "Taak +" button click event for the new "Werkproces" row
                 newWerkproces.find('.add-taak-button').on("click", function () {
                     addTaakRow(newWerkproces);
+                    updateTotalValue();
                 });
 
-                // Add a click event for the delete button
                 newWerkproces.on("click", ".delete", function () {
-                    werkprocesContainer.remove(); // Delete the Werkproces row
+                    werkprocesContainer.remove();
+                    updateTotalValue();
                 });
             }
 
-            // Function to add a "Taak" row
-            function addTaakRow(werkprocesRow) {
+            function addTaakRow(werkprocesRow, taakCounter, typeCounter, crucialCounter) {
                 const taakContainer = werkprocesRow.find('.taak-container');
-                const newTaak = $("<div class='taak-row'></div>");
+                
+                const newTaak = $(`<div class='taak-row'></div>`);
                 newTaak.append(`
-                    <input type="text" name="taak-${generateUniqueId()}[]" placeholder="Taak">
+                    <input type="text" name="taak-${generateUniqueId('taak', taakCounter)}[]" placeholder="Taak">
+                    <input type="hidden" name="type-${generateUniqueId('type', typeCounter)}" value="0">
                     <button type="button" class="switch">Type</button>
-  <button type="button" class="delete">Delete</button>
+                    <button type="button" class="delete">Delete</button>
                     <div class="radio-buttons">
                         <label>
-                        <input type="radio" name="input" value="1" disabled> 1
-                    </label>
-                    <label>
-                        <input type="radio" name="input" value="2" disabled> 2
-                    </label>
-                    <label>
-                        <input type="radio" name="input" value="3" disabled> 3
-                    </label>
-                    <label>
-                        <input type="radio" name="input" value="4" disabled> 4
-                    </label>
+                            <input type="radio" name="input" value="1" disabled> 1
+                        </label>
+                        <label>
+                            <input type="radio" name="input" value="2" disabled> 2
+                        </label>
+                        <label>
+                            <input type="radio" name="input" value="3" disabled> 3
+                        </label>
+                        <label>
+                            <input type="radio" name="input" value="4" disabled> 4
+                        </label>
                     </div>
-<label> Cruciaal
-<input type="checkbox" name="crucial-${generateUniqueId()}" id="crucial">
- </label>
+                    <label>
+                        Cruciaal
+                        <input type="checkbox" name="crucial-${generateUniqueId('crucial', crucialCounter)}" id="crucial">
+                    </label>
                 `);
                 taakContainer.append(newTaak);
 
-                // Add "Switch" button click event for the new "Taak" row
                 newTaak.find('.switch').on("click", function () {
+                    const typeInput = newTaak.find('input[name^="type"]');
+                    const currentType = parseInt(typeInput.val());
+
+                    // Toggle between 0 and 1
+                    const newType = currentType === 0 ? 1 : 0;
+
+                    // Update the hidden input with the new type value
+                    typeInput.val(newType);
+
+                    // Update the radio buttons visibility
                     showFirstSet = !showFirstSet;
                     toggleRadioButtons(newTaak.find('.radio-buttons'), showFirstSet);
+
+                    // Update the total value
+                    updateTotalValue();
                 });
-                // Add a click event for the delete button
+
                 newTaak.on("click", ".delete", function () {
-                    newTaak.remove(); // Delete the Taak row
+                    newTaak.remove();
+                    updateTotalValue();
                 });
             }
 
-            // Add a "Kerntaak +" button click event
             $('#add-kerntaak-button').on("click", function () {
                 const newKerntaak = $("<div class='kerntaak-row'></div>");
                 newKerntaak.append(`
                     <div class='kerntaak-header'>
-                        <input type='text' name="kerntaak-${generateUniqueId()}[]" placeholder='Kerntaak'>
+                        <input type='text' name="kerntaak-${generateUniqueId('kerntaak', 0)}[]" placeholder='Kerntaak'>
                         <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button>
-<button type="button" class="delete">Delete</button>
+                        <button type="button" class="delete">Delete</button>
                     </div>
                 `);
 
-                // Add "Werkproces +" button click event for this new "Kerntaak" row
+                let werkprocesCounter = 0;
+                let gradeCounter = 0;
                 newKerntaak.find('.add-werkproces-button').on("click", function () {
-                    addWerkprocesRow(newKerntaak);
+                    addWerkprocesRow(newKerntaak, werkprocesCounter++, gradeCounter++);
+                });
+
+                newKerntaak.on("click", ".delete", function () {
+                    newKerntaak.remove();
+                    updateTotalValue();
                 });
 
                 kerntaakContainer.append(newKerntaak);
-
-                // Add a click event for the delete button
-                newKerntaak.on("click", ".delete", function () {
-                    newKerntaak.remove(); // Delete the Kerntaak row
-                });
             });
         });
     </script>
