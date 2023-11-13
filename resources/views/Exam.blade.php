@@ -30,8 +30,8 @@
             })
         }
 
-        async function FeedbackBox(Placeholder) {
-            Placeholder = Placeholder || 'Typ je feedback hier...';
+        async function FeedbackBox(workprocess_id, exam_id) {
+            Placeholder = 'Typ je feedback hier...';
 
             const {value: text} = await Swal.fire({
                 input: 'textarea',
@@ -45,9 +45,6 @@
                 cancelButtonText: 'Annuleren',
                 confirmButtonText: 'Verzenden'
             })
-
-            var workprocess_id = event.target.id;
-            var exam_id = event.target.name;
 
             if (text) {
                 $.ajax({
@@ -151,7 +148,7 @@
                             </div>
                         @endforeach
                             <hr class="wp-feedback-hr">
-                            <button class="btn btn-primary wp-feedback-btn" id="{{$workprocess->id}}" name="{{$exam->id}}" onclick="FeedbackBox()">Feedback geven</button>
+                            <button class="btn btn-primary wp-feedback-btn" onclick="FeedbackBox({{$workprocess->id}}, {{$exam->id}})">Feedback geven</button>
                             <hr class="wp-feedback-hr">
 
                     </div>
@@ -159,7 +156,7 @@
 
             </div>
         @endforeach
-        
+
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
