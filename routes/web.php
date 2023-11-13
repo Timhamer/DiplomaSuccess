@@ -48,14 +48,14 @@ Route::post("/see_exam", [ExamController::class, 'see_exam'])->name('see_exam');
 
 Route::post('/feedback', [ExamController::class, 'feedback'])->name('feedback');
 
-Route::get('/editExam', [ExamController::class, 'EditExam'])->name('EditExam');
+Route::get('/editExam', [ExamController::class, 'editExam'])->name('editExam');
 Route::post('/save-form-data', 'FormController@saveFormData')->name('saveFormData');
 
-Route::get('/editExam', function () {
-    return view('editDocument', ['showFirstSet' => true]);
-});
-
-Route::post('/editExam', function () {
-    $showFirstSet = request('option') === 'yes';
-    return view('editDocument', compact('showFirstSet'));
-});
+//Route::get('/editExam', function () {
+//    return view('editDocument', ['showFirstSet' => true]);
+//});
+//
+//Route::post('/editExam', function () {
+//    $showFirstSet = request('option') === 'yes';
+//    return view('editDocument', compact('showFirstSet'));
+//});

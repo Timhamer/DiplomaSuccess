@@ -25,4 +25,5 @@ class Exam extends Model
     {
         return $this->belongsTo(Examiner::class);
     }
+
 }

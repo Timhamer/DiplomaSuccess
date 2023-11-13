@@ -5,11 +5,86 @@
         @csrf
         <div id="form-container">
             <div id="kerntaak-container">
-                <!-- Initially, no Kerntaak rows are visible -->
+                @foreach ($courses[0]->coretasks as $coretask)
+                    <div class="card-header kerntaak-header" data-toggle="collapse"
+                        data-target="#kerntaak-{{ $coretask->id }}">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <label>Kerntaak</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <label>v</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collapse" id="kerntaak-{{ $coretask->id }}">
+                        @foreach ($coretask->workprocesses as $workprocess)
+                            <div class="card-header werkproces-header" data-toggle="collapse"
+                                data-target="#workprocess-{{ $workprocess->id }}">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <input value="{{ $workprocess->name }}">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>v</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="collapse" id="workprocess-{{ $workprocess->id }}">
+                                @foreach ($workprocess->tasks as $task)
+                                    <div class="row taak">
+                                        <div class="col-sm-10">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <input value="{{ $task->name }}">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    @if ($task->type == 1)
+                                                        <div class="btn-group threeopt-radio" data-toggle="buttons">
+                                                            <label class="btn">
+                                                                <input type="radio" name="options" class="task-option"
+                                                                    value="0" disabled>0
+                                                            </label>
+                                                            <label class="btn">
+                                                                <input type="radio" name="options" class="task-option"
+                                                                    value="1" disabled>1
+                                                            </label>
+                                                            <label class="btn">
+                                                                <input type="radio" name="options" class="task-option"
+                                                                    value="2" disabled>2
+                                                            </label>
+                                                            <label class="btn">
+                                                                <input type="radio" name="options" class="task-option"
+                                                                    value="3" disabled>3
+                                                            </label>
+                                                        </div>
+                                                    @elseif ($task->type == 0)
+                                                        <div class="btn-group threeopt-radio" data-toggle="buttons">
+                                                            <label class="btn">
+                                                                <input type="radio" name="options" class="task-option"
+                                                                    value="0" disabled>Nee
+                                                            </label>
+                                                            <label class="btn">
+                                                                <input type="radio" name="options" class="task-option"
+                                                                    value="1" disabled>Ja
+                                                            </label>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endforeach
+                    </div>
+                @endforeach
+                <button type="button" id="add-kerntaak-button" class="btn btn-primary mt-2">Kerntaak +</button>
             </div>
         </div>
-        <button type="button" id="add-kerntaak-button" class="btn btn-primary mt-2">Kerntaak +</button>
-        <button type="submit" id="save-button" class="btn btn-success mt-2">Save</button>
+        <button type="submit" id="save-button" class="btn btn-success mt-2">Save</button> <!-- Add "Save" button -->
     </form>
     <div id="total-value-container">
         <!-- Display the total value here -->
@@ -189,3 +264,4 @@
         });
     </script>
 @endpush
+

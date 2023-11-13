@@ -42,7 +42,7 @@
                             <a class="nav-link active" aria-current="page" href="{{ route('studentDashboard') }}">Home</a>
                         </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="EditDocument">Wijzig documenten</a>
+                                <a class="nav-link active" aria-current="page" href="{{ route('editExam') }}">Wijzig documenten</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="{{ route('adduser') }}">Gebruiker toevoegen</a>
