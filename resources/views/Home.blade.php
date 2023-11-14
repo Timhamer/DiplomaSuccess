@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <title>Bootstrap Rows of Divs</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -33,7 +36,9 @@
         }
 
         async function ConfirmBox() {
-            const {value: accept} = await Swal.fire({
+            const {
+                value: accept
+            } = await Swal.fire({
                 title: "<strong>Weet je zeker dat je het examen in wilt zien?</strong>",
                 icon: "warning",
                 html: `
@@ -52,21 +57,22 @@
             });
 
             if (accept) {
+                var examId = $(this).data('exam-id');
                 $.ajax({
                     type: 'POST',
-                    url: '/see_exam',
+                    url: this.getAttribute('data-route'),
                     data: {
-                        _token: '{{csrf_token()}}',
-                        'exam_id': 1
+                        _token: '{{ csrf_token() }}',
+                        'exam_id': examId
                     },
-                    success: function (data) {
+                    success: function(data) {
                         if (data.success === true) {
                             console.log(data)
                         } else {
                             Feedback('Server error bij inzien van examen', 'error')
                         }
                     },
-                    error: function (data) {
+                    error: function(data) {
                         Feedback('Client error bij inzien van examen', 'error')
                     }
                 })
@@ -76,7 +82,9 @@
         }
 
         async function FeedbackBox() {
-            const {value: text} = await Swal.fire({
+            const {
+                value: text
+            } = await Swal.fire({
                 input: 'textarea',
                 inputLabel: 'Feedback',
                 inputPlaceholder: 'Typ je feedback hier...',
@@ -95,19 +103,19 @@
                     type: 'POST',
                     url: '/feedback',
                     data: {
-                        _token: '{{csrf_token()}}',
+                        _token: '{{ csrf_token() }}',
                         'feedback': text,
                         'workprocess_id': 1,
                         'exam_id': 1
                     },
-                    success: function (data) {
+                    success: function(data) {
                         if (data.success === true) {
                             Feedback('Feedback verzonden', 'success')
                         } else {
                             Feedback('Feedback niet verzonden', 'error')
                         }
                     },
-                    error: function (data) {
+                    error: function(data) {
                         Feedback('Feedback niet verzonden', 'error')
                     }
                 })
@@ -115,38 +123,37 @@
                 Feedback('Geen feedback ingevoerd', 'error')
             }
         }
-
     </script>
 </head>
 @section('content')
 
     <body>
-    @foreach ($exams as $exam)
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="my-3 p-3 bg-light">
-                        <div class="row">
-                            <div class="col-9">
-                                <h4>{{ $exam->course->name }}</h4>
-                            </div>
-                            <div class="col-3">
-                                <a href="{{ route('Examine', ['id' => $exam->course->id]) }}">
+        @foreach ($exams as $exam)
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="my-3 p-3 bg-light">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h4>{{ $exam->course->name }}</h4>
+                                </div>
+                                <div class="col-3">
 
-                                    <button class="btn btn-primary">Bekijk</button>
-                                </a>
+                                    <button class="btn btn-primary" data-exam="{{ $exam->id }}"
+                                        data-route="{{ $exam->id }}" onclick="ConfirmBox()">Confirm knop</button>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            @endforeach
-        </div>
+            </div> @endforeach
+                </div>
 
-        <button class="btn btn-primary" onclick="ConfirmBox()">Confirm knop</button>
 
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
-</html>
+
+    </html>
 @endsection
