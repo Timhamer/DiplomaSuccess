@@ -1,1 +1,1 @@
-@extends('layouts.edit-exam');
+@extends('layouts.edit-exam')
