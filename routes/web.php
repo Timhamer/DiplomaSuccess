@@ -58,4 +58,14 @@ Route::post('/save-form-data', 'FormController@saveFormData')->name('saveFormDat
 //Route::post('/editExam', function () {
 //    $showFirstSet = request('option') === 'yes';
 //    return view('editDocument', compact('showFirstSet'));
-//});
+
+Route::post('/saveCoretask', [ExamController::class, 'insertCoretask'])->name('addCoretask');
+Route::post('/saveWorkproces', [ExamController::class, 'insertWorkproces'])->name('addWorkproces');
+Route::post('/saveTask', [ExamController::class, 'insertTask'])->name('addTask');
+Route::post('/deleteCoretask', [ExamController::class, 'deleteCoretask'])->name('deleteCoretask');
+Route::post('/deleteWorkproces', [ExamController::class, 'deleteWorkproces'])->name('deleteWorkproces');
+Route::post('/deleteTask', [ExamController::class, 'deleteTask'])->name('deleteTask');
+Route::post('/updateCoretask', [ExamController::class, 'updateCoretask'])->name('updateCoretask');
+Route::post('/updateWorkproces', [ExamController::class, 'updateWorkproces'])->name('updateWorkproces');
+Route::post('/updateTask', [ExamController::class, 'updateTask'])->name('updateTask');
+

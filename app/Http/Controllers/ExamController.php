@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exam;
+use App\Models\Task;
 use App\Models\Courses;
+use App\Models\CoreTask;
 use App\Models\Examiner;
 use App\Models\ExamTask;
-use App\Models\ExamWorkprocess;
+use App\Models\Workproces;
 use Illuminate\Http\Request;
+use App\Models\ExamWorkprocess;
 use Illuminate\Support\Facades\Log;
 
 class ExamController extends Controller
@@ -220,4 +223,161 @@ class ExamController extends Controller
     {
         //
     }
+
+    public function insertCoretask(Request $request)
+    {
+        $courseId = $request->input('course_id');
+        $name = $request->input('name');
+        $code = $request->input('code');
+
+        // Check if a row exists with the given exam_id and task_id
+        $existingCoretask = CoreTask::where('course_id', $courseId)->where('code', $code)->first();
+
+        if ($existingCoretask) {
+            // If the row exists, update the answer column
+            $existingCoretask->name = $name;
+            $existingCoretask->save();
+        } else {
+            // If the row does not exist, create a new one
+            $coretask = new CoreTask();
+            $coretask->course_id = $courseId;
+            $coretask->name = $name;
+            $coretask->code = $code;
+            $coretask->save();
+
+            $coretask->refresh();
+        }
+        return response()->json(['coretask' => $coretask]);
+    }
+    public function insertWorkproces(Request $request)
+    {
+        $coretaskId = $request->input('coretask_id');
+        $name = $request->input('name');
+        $code = $request->input('code');
+
+        // Check if a row exists with the given exam_id and task_id
+        $existingWorkProces = Workproces::where('coretask_id', $coretaskId)->where('code', $code)->first();
+
+        if ($existingWorkProces) {
+            // If the row exists, update the answer column
+            $existingWorkProces->name = $name;
+            $existingWorkProces->save();
+        } else {
+            // If the row does not exist, create a new one
+            $workProces = new Workproces();
+            $workProces->coretask_id = $coretaskId;
+            $workProces->name = $name;
+            $workProces->code = $code;
+            $workProces->save();
+
+            $workProces->refresh();
+        }
+        return response()->json(['workproces' => $workProces]);
+    }
+
+    public function insertTask(Request $request)
+    {
+        $workProcesId = $request->input('workproces_id');
+        $name = $request->input('name');
+        $crucial = $request->input('crucial');
+        $type = $request->input('type');
+        $description = $request->input('description');
+        $zero = $request->input('zero');
+        $one = $request->input('one');
+        $two = $request->input('two');
+        $three = $request->input('three');
+
+        // Check if a row exists with the given exam_id and task_id
+        // $existingWorkProces = Workproces::where('coretask_id', $coretaskId)->where('code', $code)->first();
+
+        // if ($existingWorkProces) {
+        //     // If the row exists, update the answer column
+        //     $existingWorkProces->name = $name;
+        //     $existingWorkProces->save();
+        // } else {
+        //     // If the row does not exist, create a new one
+        //     $workProces = new Workproces();
+        //     $workProces->coretask_id = $coretaskId;
+        //     $workProces->name = $name;
+        //     $workProces->code = $code;
+        //     $workProces->save();
+        // }
+    }
+
+    public function updateCoretask(Request $request)
+    {
+        $coretaskId = $request->input('coretask_id');
+        $name = $request->input('name');
+        $code = $request->input('code');
+
+        // Check if a row exists with the given exam_id and task_id
+        $existingCoretask = CoreTask::where('id', $coretaskId)->first();
+
+        if ($existingCoretask) {
+            // If the row exists, update the answer column
+            $existingCoretask->name = $name;
+            $existingCoretask->code = $code;
+            $existingCoretask->save();
+        } else {
+
+           
+        }
+    }
+
+    public function deleteCoretask(Request $request)
+    {
+        $coretaskId = $request->input('coretask_id');
+        try {
+            // Find the CoreTask by ID
+            $coreTask = CoreTask::findOrFail($coretaskId);
+    
+            // Delete the CoreTask
+            $coreTask->delete();
+    
+            // You can return a response indicating success if needed
+            return response()->json(['message' => 'Core task deleted successfully']);
+        } catch (\Exception $e) {
+            // Handle any exceptions, such as the task not being found
+            return response()->json(['error' => 'Error deleting core task: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteWorkproces(Request $request)
+    {
+        $workprocesId = $request->input('workproces_id');
+
+        try {
+            // Find the CoreTask by ID
+            $workproces = Workproces::findOrFail($workprocesId);
+    
+            // Delete the CoreTask
+            $workproces->delete();
+    
+            // You can return a response indicating success if needed
+            return response()->json(['message' => 'Workproces deleted successfully']);
+        } catch (\Exception $e) {
+            // Handle any exceptions, such as the task not being found
+            return response()->json(['error' => 'Error deleting workproces: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteTask(Request $request)
+    {
+        $taskId = $request->input('task_id');
+
+        try {
+            // Find the CoreTask by ID
+            $task = Task::findOrFail($taskId);
+    
+            // Delete the CoreTask
+            $task->delete();
+    
+            // You can return a response indicating success if needed
+            return response()->json(['message' => 'Task deleted successfully']);
+        } catch (\Exception $e) {
+            // Handle any exceptions, such as the task not being found
+            return response()->json(['error' => 'Error deleting task: ' . $e->getMessage()], 500);
+        }
+    }
+
 }
