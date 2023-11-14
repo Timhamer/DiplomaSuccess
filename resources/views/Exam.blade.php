@@ -4,12 +4,17 @@
 <html>
 <head>
     <title>Studenten dashboard</title>
-   {{-- <pre> @php var_dump($exam)@endphp </pre> --}}
+    {{-- <pre> @php var_dump($exam)@endphp </pre> --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+
     <script>
         function Feedback(Message, Type) {
             const Toast = Swal.mixin({
@@ -71,7 +76,6 @@
                 Feedback('Geen feedback ingevoerd', 'error')
             }
         }
-
     </script>
 </head>
 <body>
@@ -79,7 +83,7 @@
     <div class="container">
         @foreach($exam->course->coretasks as $coretask)
 
-        {{-- {{ dump($coretask->workprocesses[0]) }} --}}
+            {{-- {{ dump($coretask->workprocesses[0]) }} --}}
             <div class="card-header kerntaak-header" data-toggle="collapse" data-target="#kerntaak-{{$coretask->id}}">
                 <div class="row">
                     <div class="col-sm-11">
@@ -120,25 +124,55 @@
                                             @if ($task->type == 1)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}@endif>{{  $task->zero }}
+                                                        <input type="radio" name="options" class="task-option" value="0"
+                                                               data-exam-id="{{ $exam->id }}"
+                                                               data-task-id="{{ $task->id }}"
+                                                               data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
+                                                            {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}
+                                                            @endif>{{  $task->zero }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}@endif>{{ $task->one }}
+                                                        <input type="radio" name="options" class="task-option" value="1"
+                                                               data-exam-id="{{ $exam->id }}"
+                                                               data-task-id="{{ $task->id }}"
+                                                               data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
+                                                            {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}
+                                                            @endif>{{ $task->one }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="2" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 2 ? 'checked' : '' }}@endif>{{ $task->two }}
+                                                        <input type="radio" name="options" class="task-option" value="2"
+                                                               data-exam-id="{{ $exam->id }}"
+                                                               data-task-id="{{ $task->id }}"
+                                                               data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
+                                                            {{ $task->taskValues[0]->answer == 2 ? 'checked' : '' }}
+                                                            @endif>{{ $task->two }}
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="3" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 3 ? 'checked' : '' }}@endif>{{ $task->three }}
+                                                        <input type="radio" name="options" class="task-option" value="3"
+                                                               data-exam-id="{{ $exam->id }}"
+                                                               data-task-id="{{ $task->id }}"
+                                                               data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
+                                                            {{ $task->taskValues[0]->answer == 3 ? 'checked' : '' }}
+                                                            @endif>{{ $task->three }}
                                                     </label>
                                                 </div>
                                             @elseif ($task->type == 0)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="0" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}@endif>Nee
+                                                        <input type="radio" name="options" class="task-option" value="0"
+                                                               data-exam-id="{{ $exam->id }}"
+                                                               data-task-id="{{ $task->id }}"
+                                                               data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
+                                                            {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}
+                                                            @endif>Nee
                                                     </label>
                                                     <label class="btn">
-                                                        <input type="radio" name="options" class="task-option" value="1" data-exam-id="{{ $exam->id }}" data-task-id="{{ $task->id }}" data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0){{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}@endif>Ja
+                                                        <input type="radio" name="options" class="task-option" value="1"
+                                                               data-exam-id="{{ $exam->id }}"
+                                                               data-task-id="{{ $task->id }}"
+                                                               data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
+                                                            {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}
+                                                            @endif>Ja
                                                     </label>
                                                 </div>
                                             @endif
@@ -147,9 +181,11 @@
                                 </div>
                             </div>
                         @endforeach
-                            <hr class="wp-feedback-hr">
-                            <button class="btn btn-primary wp-feedback-btn" onclick="FeedbackBox({{$workprocess->id}}, {{$exam->id}})">Feedback geven</button>
-                            <hr class="wp-feedback-hr">
+                        <hr class="wp-feedback-hr">
+                        <button class="btn btn-primary wp-feedback-btn"
+                                onclick="FeedbackBox({{$workprocess->id}}, {{$exam->id}})">Feedback geven
+                        </button>
+                        <hr class="wp-feedback-hr">
 
                     </div>
                 @endforeach
@@ -157,40 +193,83 @@
             </div>
         @endforeach
 
-    </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    @if ($user->role == 2)
+        <hr>
 
-    <script>
-        $(document).ready(function() {
-            $('.task-option').on('click', function() {
-                var selectedValue = $(this).val();
-                var examId = $(this).data('exam-id');
-                var taskId = $(this).data('task-id');
+        <div class="footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="signature-box">
+                        <label for="signature">Handtekening Frans de Boer</label> <br>
+                        <section class="signature-component">
+                            <canvas id="signature-pad" width="400" height="200"></canvas>
+                            <button id="clear">🔄</button>
+                        </section>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="signature-box">
+                        <label for="signature">Handtekening Richard Kingma</label> <br>
+                        <section class="signature-component">
+                            <canvas id="signature-pad" width="400" height="200"></canvas>
+                            <button id="clear">🔄</button>
+                        </section>
+                    </div>
+                </div>
+            </div>
 
-                $.ajax({
-                    type: 'POST',
-                    url: this.getAttribute('data-route'), // Update the URL to the route that will handle the submission
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        exam_id: examId,
-                        task_id: taskId,
-                        selected_value: selectedValue
-                    },
-                    success: function(response) {
-                        // Handle success response if needed
-                    },
-                    error: function(xhr) {
-                        // Handle error response if needed
-                    }
+            <div class="row">
+                <button class="btn btn-primary turnin" onclick="Submit()">Examen inleveren</button>
+            </div>
+        </div>
+
+        <script>
+            const SignPads = document.querySelectorAll('.signature-component');
+
+            SignPads.forEach((SignPad) => {
+                const canvas = SignPad.querySelector('canvas');
+                const signaturePad = new SignaturePad(canvas);
+
+                let ClearBtn = SignPad.querySelector('button')
+                ClearBtn.addEventListener('click', function () {
+                    signaturePad.clear();
                 });
             });
-        });
         </script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+                integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        @if ($user->role == 2)
+            <script>
+                $(document).ready(function () {
+                    $('.task-option').on('click', function () {
+                        var selectedValue = $(this).val();
+                        var examId = $(this).data('exam-id');
+                        var taskId = $(this).data('task-id');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: this.getAttribute('data-route'), // Update the URL to the route that will handle the submission
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                exam_id: examId,
+                                task_id: taskId,
+                                selected_value: selectedValue
+                            },
+                            success: function (response) {
+                                // Handle success response if needed
+                            },
+                            error: function (xhr) {
+                                // Handle error response if needed
+                            }
+                        });
+                    });
+                });
+            </script>
     @endif
 
 </body>
