@@ -11,10 +11,11 @@
             <div id="kerntaak-container">
                 @foreach ($courses[0]->coretasks as $coretask)
                     <div class="card-header kerntaak-header" data-toggle="collapse"
-                        data-target="#kerntaak-{{ $coretask->id }}">
+                        data-target="#kerntaak-{{ $coretask->id }}" >
                         <div class="row">
                             <div class="col-sm-11">
                                 <label>Kerntaak</label>
+                                <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button><button type="button" class="delete">Delete</button>
                             </div>
                             <div class="col-sm-1">
                                 <label>v</label>
@@ -25,7 +26,7 @@
                     <div class="collapse" id="kerntaak-{{ $coretask->id }}">
                         @foreach ($coretask->workprocesses as $workprocess)
                             <div class="card-header werkproces-header" data-toggle="collapse"
-                                data-target="#workprocess-{{ $workprocess->id }}">
+                                data-target="#workprocess-{{ $workprocess->id }}" id="${generateUniqueId('werkproces', werkprocesCounter)}">
                                 <div class="row">
                                     <div class="col-sm-11">
                                         <input value="{{ $workprocess->name }}">
@@ -85,8 +86,8 @@
                         @endforeach
                     </div>
                 @endforeach
-                <button type="button" id="add-kerntaak-button" class="btn btn-primary mt-2">Kerntaak +</button>
-            </div>
+                </div>
+            <button type="button" id="add-kerntaak-button" class="btn btn-primary mt-2">Kerntaak +</button>
         </div>
         <button type="submit" id="save-button" class="btn btn-success mt-2">Save</button> <!-- Add "Save" button -->
     </form>
@@ -100,6 +101,31 @@
         /* Add your styles here */
     </style>
     <script>
+
+        $(document).ready(function() {
+            $('.task-option').on('click', function() {
+                var selectedValue = $(this).val();
+                var examId = $(this).data('exam-id');
+                var taskId = $(this).data('task-id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: this.getAttribute('data-route'), // Update the URL to the route that will handle the submission
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        exam_id: examId,
+                        task_id: taskId,
+                        selected_value: selectedValue
+                    },
+                    success: function(response) {
+                        // Handle success response if needed
+                    },
+                    error: function(xhr) {
+                        // Handle error response if needed
+                    }
+                });
+            });
+        });
        $(document).ready(function () {
             let showFirstSet = true;
             let kerntaakContainer = $('#kerntaak-container');
@@ -137,7 +163,7 @@
 
             function calculateTotalValue(werkprocesRow) {
                 let totalValue = 0;
-                
+
                 const cijferContainer = werkprocesRow.find('.cijfer-container');
                 werkprocesRow.find('.taak-row').each(function (index) {
                     const type = parseInt($(this).find('input[name^="type"]').val());
@@ -163,10 +189,20 @@
                 const werkprocesContainer = $("<div class='werkproces-container'></div>");
                 const newWerkproces = $(`<div class='werkproces-row' id="${generateUniqueId('werkproces', werkprocesCounter)}"></div>`);
                 newWerkproces.append(`
-                    <input type="text" name="werkproces-${generateUniqueId('werkproces', werkprocesCounter)}[]" placeholder="Werkproces">
-                    <input type="number" name="grade-${generateUniqueId('grade', gradeCounter)}" placeholder="cijfer">
+
+        <div class="card-header werkproces-header" data-toggle="collapse" data-target="#workprocess-{{ $workprocess->id }}">
+            <div class="row">
+                <div class="col-sm-11">
+                    <input value="{{ $workprocess->name }}">
                     <button type="button" class="add-taak-button btn btn-info">Taak +</button>
                     <button type="button" class="delete">Delete</button>
+                </div>
+                    <div class="col-sm-1">
+                        <label>v</label>
+                    </div>
+                </div>
+            </div>
+                <div class="collapse" id="workprocess-{{ $workprocess->id }}">
                     <div class="taak-container">
                         <!-- Initially, no Taak rows are visible -->
                     </div>
@@ -190,31 +226,50 @@
 
             function addTaakRow(werkprocesRow, taakCounter, typeCounter, crucialCounter) {
                 const taakContainer = werkprocesRow.find('.taak-container');
-                
+
                 const newTaak = $(`<div class='taak-row'></div>`);
                 newTaak.append(`
-                    <input type="text" name="taak-${generateUniqueId('taak', taakCounter)}[]" placeholder="Taak">
-                    <input type="hidden" name="type-${generateUniqueId('type', typeCounter)}" value="0">
-                    <button type="button" class="switch">Type</button>
-                    <button type="button" class="delete">Delete</button>
-                    <div class="radio-buttons">
-                        <label>
-                            <input type="radio" name="input" value="1" disabled> 1
-                        </label>
-                        <label>
-                            <input type="radio" name="input" value="2" disabled> 2
-                        </label>
-                        <label>
-                            <input type="radio" name="input" value="3" disabled> 3
-                        </label>
-                        <label>
-                            <input type="radio" name="input" value="4" disabled> 4
-                        </label>
+
+        <div class="row taak">
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <input value="{{ $task->name }}">
+                        <button type="button" class="switch">Type</button>
+                        <button type="button" class="delete">Delete</button>
                     </div>
-                    <label>
-                        Cruciaal
-                        <input type="checkbox" name="crucial-${generateUniqueId('crucial', crucialCounter)}" id="crucial">
-                    </label>
+                        <div class="col-sm-6">
+                            @if ($task->type == 1)
+                                <div class="btn-group threeopt-radio" data-toggle="buttons">
+                                    <label class="btn">
+                                        <input type="radio" name="options" class="task-option" value="0" disabled>0
+                                     </label>
+                                    <label class="btn">
+                                        <input type="radio" name="options" class="task-option" value="1" disabled>1
+                                    </label>
+                                    <label class="btn">
+                                        <input type="radio" name="options" class="task-option" value="2" disabled>2
+                                    </label>
+                                    <label class="btn">
+                                        <input type="radio" name="options" class="task-option" value="3" disabled>3
+                                    </label>
+                                </div>
+                            @elseif ($task->type == 0)
+                                <div class="btn-group threeopt-radio" data-toggle="buttons">
+                                    <label class="btn">
+                                        <input type="radio" name="options" class="task-option" value="0" disabled>Nee
+                                    </label>
+                                    <label class="btn">
+                                        <input type="radio" name="options" class="task-option" value="1" disabled>Ja
+                                    </label>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
                 `);
                 taakContainer.append(newTaak);
 
@@ -245,10 +300,19 @@
             $('#add-kerntaak-button').on("click", function () {
                 const newKerntaak = $("<div class='kerntaak-row'></div>");
                 newKerntaak.append(`
-                    <div class='kerntaak-header'>
-                        <input type='text' name="kerntaak-${generateUniqueId('kerntaak', 0)}[]" placeholder='Kerntaak'>
-                        <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button>
-                        <button type="button" class="delete">Delete</button>
+
+                    <div class="card-header kerntaak-header" data-toggle="collapse"
+                        data-target="#kerntaak-{{ $coretask->id }}">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <label>Kerntaak</label>
+                                <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button>
+                                <button type="button" class="delete">Delete</button>
+                            </div>
+                            <div class="col-sm-1">
+                                <label>v</label>
+                            </div>
+                        </div>
                     </div>
                 `);
 
@@ -266,6 +330,8 @@
                 kerntaakContainer.append(newKerntaak);
             });
         });
+
+
     </script>
 @endpush
 
