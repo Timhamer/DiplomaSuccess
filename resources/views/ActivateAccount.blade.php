@@ -1,6 +1,5 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app') --}}
 
-@section('content')
     <div class="container">
         <h1>Account afmaken</h1>
         <form method="POST" action="{{ route('finishuser') }}">
@@ -22,4 +21,3 @@
             <button type="submit" class="btn btn-primary">Maak account af</button>
         </form>
     </div>
-@endsection
