@@ -228,8 +228,47 @@ $jsonString = json_encode($phpObject);
         </div>
         <div class="collapse" id="task-${task.id}">
         </div>
-
-                `);
+        
+        
+        `);
+        // <div class="row taak">
+        //     <div class="col-sm-10">
+        //         <div class="row">
+        //             <div class="col-sm-6">
+        //                 <input value="{{ $task->name }}">
+        //                 <button type="button" class="switch">Type</button>
+        //                 <button type="button" class="delete">Delete</button>
+        //             </div>
+        //                 <div class="col-sm-6">
+        //                     @if ($task->type == 1)
+        //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
+        //                             <label class="btn">
+        //                                 <input type="radio" name="options" class="task-option" value="0" disabled>0
+        //                              </label>
+        //                             <label class="btn">
+        //                                 <input type="radio" name="options" class="task-option" value="1" disabled>1
+        //                             </label>
+        //                             <label class="btn">
+        //                                 <input type="radio" name="options" class="task-option" value="2" disabled>2
+        //                             </label>
+        //                             <label class="btn">
+        //                                 <input type="radio" name="options" class="task-option" value="3" disabled>3
+        //                             </label>
+        //                         </div>
+        //                     @elseif ($task->type == 0)
+        //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
+        //                             <label class="btn">
+        //                                 <input type="radio" name="options" class="task-option" value="0" disabled>Nee
+        //                             </label>
+        //                             <label class="btn">
+        //                                 <input type="radio" name="options" class="task-option" value="1" disabled>Ja
+        //                             </label>
+        //                         </div>
+        //                     @endif
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
                 taakContainer.append(newTaak);
                 werkprocesRow.find('#workprocess-' + task.workprocess_id).append(taakContainer);
 
@@ -313,7 +352,7 @@ $jsonString = json_encode($phpObject);
                             <div class="col-sm-11">
                                 <input id='ktinput-${jsObject.id}' value='${jsObject.name}'>
                                 <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button>
-                        <button type="button" class="delete">Delete</button>
+                                <button type="button" class="delete">Delete</button>
                             </div>
                             <div class="col-sm-1">
                                 <label>v</label>
