@@ -16,6 +16,52 @@
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
     <script>
+        async function SubmitExam() {
+            const {
+                value: accept
+            } = await Swal.fire({
+                title: "<strong>Weet je zeker dat je de uitslag wilt publiceren?</strong>",
+                icon: "warning",
+                html: `
+                    De uitslag van de kandidaat is na dit punt <b>definitief</b>.  <br>
+                  `,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonColor: '#d66a30',
+                confirmButtonText: `
+                    Publiceren
+                  `,
+                cancelButtonText: `
+                    Annuleren
+                  `
+            });
+
+            if (accept) {
+                var examId = $(this).data('exam-id');
+                $.ajax({
+                    type: 'POST',
+                    url: this.getAttribute('data-route'),
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        'exam_id': examId
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            console.log(data)
+                        } else {
+                            Feedback('Server error bij publiceren van uitslag', 'error')
+                        }
+                    },
+                    error: function (data) {
+                        Feedback('Client error bij publiceren van uitslag', 'error')
+                    }
+                })
+            } else {
+                Feedback('Publiceren van uitslag geannuleerd', 'info')
+            }
+        }
+
         function Feedback(Message, Type) {
             const Toast = Swal.mixin({
                 toast: true,
@@ -80,10 +126,8 @@
 </head>
 <body>
 @section('content')
-    <div class="container">
+    <div class="container exam-container">
         @foreach($exam->course->coretasks as $coretask)
-
-            {{-- {{ dump($coretask->workprocesses[0]) }} --}}
             <div class="card-header kerntaak-header" data-toggle="collapse" data-target="#kerntaak-{{$coretask->id}}">
                 <div class="row">
                     <div class="col-sm-11">
@@ -95,7 +139,7 @@
                 </div>
             </div>
 
-            <div class="collapse" id="kerntaak-{{$coretask->id}}">
+            <div class="collapse kerntaak" id="kerntaak-{{$coretask->id}}">
                 @foreach($coretask->workprocesses as $workprocess)
                     <div class="card-header werkproces-header" data-toggle="collapse"
                          data-target="#workprocess-{{$workprocess->id}}">
@@ -108,18 +152,17 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="collapse" id="workprocess-{{$workprocess->id}}">
+                    <div class="collapse werkprocess" id="workprocess-{{$workprocess->id}}">
                         <hr class="wp-feedback-hr">
 
                         @foreach($workprocess->tasks as $task)
-                            <div class="row taak">
+                            <div class="row-taak">
                                 <div class="col-sm-10">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label for="task">{{$task->name}}</label>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="threeopt-container">
 
                                             @if ($task->type == 1)
                                                 <div class="btn-group threeopt-radio" data-toggle="buttons">
@@ -188,13 +231,14 @@
                         <hr class="wp-feedback-hr">
 
                     </div>
+
                 @endforeach
 
             </div>
         @endforeach
+    </div>
 
-        <hr>
-
+    <div class="container exam-container">
         <div class="footer">
             <div class="row">
                 <div class="col-sm-6">
@@ -218,7 +262,7 @@
             </div>
 
             <div class="row">
-                <button class="btn btn-primary turnin" onclick="Submit()">Examen inleveren</button>
+                <button class="btn btn-primary turnin" onclick="SubmitExam()">Examen inleveren</button>
             </div>
         </div>
 

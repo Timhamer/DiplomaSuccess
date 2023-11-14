@@ -1,8 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
 
+* {
+    --Primary: #525252;
+    --Secondary: #414141;
+    --Tertiary: #313131;
+    --Quaternary: #292929;
+
+    --Accent: #CA3E47;
+
+    --Text: #dedede;
+}
+
 body {
-    color: white;
-    background-color: #2b2f34;
+    background-color: var(--Primary);
+    color: var(--Text);
 
     font-family: 'Poppins', sans-serif;
     font-family: 'Roboto', sans-serif;
@@ -14,7 +25,7 @@ input {
 }
 
 .navbar {
-    background-color: #1f242b !important;
+    background-color: var(--Secondary) !important;
     margin-bottom: 50px;
 }
 
@@ -25,6 +36,9 @@ input {
 .navbar a {
     color: white !important;
 }
+
+
+
 
 .addbutton {
     position: absolute;
@@ -63,41 +77,102 @@ input {
     padding: 12px 50px;
 }
 
+.exam-container {
+    background-color:  var(--Secondary);
+
+    margin: 50px auto;
+    padding: 40px;
+
+    border-radius: 5px;
+}
+
 .card-header {
     padding: 12px 50px;
-
-    background-color: #1f242b;
+    text-align: left;
     border: none;
 }
 
-.werkproces-header {
-    width: 95%;
-    margin: 0 auto;
+.card-header label {
+    text-decoration: underline;
+    margin: auto 5px;
+}
 
-    background-color: #1f242b;
+.kerntaak-header, .kerntaak {
+    background-color: var(--Tertiary);
+    border-radius: 5px !important;
+}
+
+.kerntaak-header  {
+    margin: 10px;
+    padding: 10px;
+}
+
+.kerntaak {
+    border-radius: 2px;
+
+    margin: 0 auto;
+    width: 95%;
+}
+
+.werkproces-header, .werkprocess {
+    background-color: var(--Tertiary);
+    border-radius: 5px !important;
+}
+
+.werkprocess {
+    border-radius: 2px;
+
+    margin: 0 auto;
+    width: 95%;
+}
+
+.werkproces-header {
+    text-align: left;
 }
 
 .taak {
     width: 90%;
     margin: 0 auto;
 
-    background-color: #1f242b;
+    background-color: var(--Quaternary);
 }
 
 .taak .row {
     margin-top: 10px;
 }
 
+.row-taak {
+    padding: 0 30px;
+    text-align: left;
+}
+
+
 .threeopt-radio {
+    margin-left: auto;
     float: right;
+
+    justify-content: right;
+    display: flex;
+
+    width: 100%;
+}
+
+.threeopt-container {
+    float: right !important;
+    width: 50%;
 }
 
 .threeopt-radio .btn {
-    background-color: #b8c9e6;
+    border-color: var(--Accent) !important;
+    color: var(--Accent) !important;
+    border: 2px solid;
+
+    border-radius: 0;
 }
 
 .threeopt-radio .active {
-    background-color: #76849c;
+    background-color: var(--Accent) !important;
+    color: black !important;
 }
 
 input[type="radio"] {
