@@ -288,20 +288,26 @@ class ExamController extends Controller
         $three = $request->input('three');
 
         // Check if a row exists with the given exam_id and task_id
-        // $existingWorkProces = Workproces::where('coretask_id', $coretaskId)->where('code', $code)->first();
+        $existingTask = Task::where('workprocess_id', $workProcesId)->where('name', $name)->first();
 
-        // if ($existingWorkProces) {
-        //     // If the row exists, update the answer column
-        //     $existingWorkProces->name = $name;
-        //     $existingWorkProces->save();
-        // } else {
-        //     // If the row does not exist, create a new one
-        //     $workProces = new Workproces();
-        //     $workProces->coretask_id = $coretaskId;
-        //     $workProces->name = $name;
-        //     $workProces->code = $code;
-        //     $workProces->save();
-        // }
+        if ($existingTask) {
+        } else {
+            $task = new Task();
+            $task->workprocess_id = $workProcesId;
+            $task->name = $name;
+            $task->crucial = $crucial;
+            $task->type =$type;
+            $task->description = $description;
+            $task->zero = $zero;
+            $task->one = $one;
+            $task->two = $two;
+            $task->three = $three;
+            $task->save();
+
+            $task->refresh();
+        }
+        return response()->json(['task' => $task]);
+        
     }
 
     public function updateCoretask(Request $request)
@@ -319,6 +325,47 @@ class ExamController extends Controller
             $existingCoretask->code = $code;
             $existingCoretask->save();
         } else {
+
+           
+        }
+    }
+
+    public function updateWorkproces(Request $request)
+    {
+        $workprocesId = $request->input('workproces_id');
+        $name = $request->input('name');
+        $code = $request->input('code');
+
+        // Check if a row exists with the given exam_id and task_id
+        $existingWorkProces = Workproces::where('id', $workprocesId)->first();
+
+        if ($existingWorkProces) {
+            // If the row exists, update the answer column
+            $existingWorkProces->name = $name;
+            $existingWorkProces->code = $code;
+            $existingWorkProces->save();
+        } else {
+
+           
+        }
+    }
+
+    public function updateTask(Request $request)
+    {
+        $taakId = $request->input('task_id');
+        $name = $request->input('name');
+
+        // Check if a row exists with the given exam_id and task_id
+        $existingTask = Task::where('id', $taakId)->first();
+
+        if ($existingTask) {
+            // If the row exists, update the answer column
+            $existingTask->name = $name;
+            $existingTask->save();
+            return response()->json(['message' => 'Task updated successfully']);
+
+        } else {
+            return response()->json(['message' => 'Task updated failed']);
 
            
         }

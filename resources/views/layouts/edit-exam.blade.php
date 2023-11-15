@@ -14,17 +14,15 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 @section('content')
-    <form id="dynamic-form" action="{{ route('saveFormData') }}" method="POST">
-        @csrf
-        <div id="form-container">
-            <div id="kerntaak-container">
+    @csrf
+    <div id="form-container">
+        <div id="kerntaak-container">
 
 
-            </div>
-            <button type="button" id="add-kerntaak-button" class="btn btn-primary mt-2">Kerntaak +</button>
         </div>
-        <button type="submit" id="save-button" class="btn btn-success mt-2">Save</button> <!-- Add "Save" button -->
-    </form>
+        <button type="button" id="add-kerntaak-button" class="btn btn-primary mt-2">Kerntaak +</button>
+    </div>
+    <button type="submit" id="save-button" class="btn btn-success mt-2">Save</button> <!-- Add "Save" button -->
     <div id="total-value-container">
         <!-- Display the total value here -->
     </div>
@@ -52,7 +50,8 @@ $jsonString = json_encode($phpObject);
                 $.ajax({
                     type: 'POST',
                     url: this.getAttribute(
-                    'data-route'), // Update the URL to the route that will handle the submission
+                        'data-route'
+                        ), // Update the URL to the route that will handle the submission
                     data: {
                         _token: '{{ csrf_token() }}',
                         exam_id: examId,
@@ -135,7 +134,9 @@ $jsonString = json_encode($phpObject);
              data-target="#workprocess-${workProces.id}">
             <div class="row">
                 <div class="col-sm-11">
-                    <input value='${workProces.name}'>
+                    <input id='wpinput-${workProces.id}' value='${workProces.name}'>
+                    <input id='wpcinput-${workProces.id}' value='${workProces.code}'>
+
                     <button type='button' class='add-task-button btn btn-secondary'>Taak +</button>
                     <button type="button" class="delete">Delete</button>
                 </div>
@@ -155,26 +156,26 @@ $jsonString = json_encode($phpObject);
 
                 kerntaakRow.find('#kerntaak-' + workProces.coretask_id).append(werkprocesContainer);
 
-                newWerkproces.find('.add-taak-button').on("click", function() {
-
+                newWerkproces.find('.add-task-button').on("click", function() {
                     $.ajax({
                         type: 'POST',
                         url: 'saveTask', // Update the URL to the route that will handle the submission
                         data: {
                             _token: '{{ csrf_token() }}',
-                            workproces_id: 1,
+                            workproces_id: workProces.id,
                             name: 'Test',
                             crucial: 1,
                             type: 1,
+                            description: 'tekst',
                             zero: 'zero',
                             one: 'one',
                             two: 'two',
                             three: 'three'
                         },
                         success: function(response) {
-                            // Handle success response if needed
-                            console.log(response);
-                            // addWerkprocesRow(newKerntaak, response);
+                            addTaakRow(newWerkproces, response["task"]);
+                            
+
                         },
                         error: function(xhr) {
                             // Handle error response if needed
@@ -196,7 +197,6 @@ $jsonString = json_encode($phpObject);
                         },
                         success: function(response) {
                             // Handle success response if needed
-                            console.log(response);
                             // addWerkprocesRow(newKerntaak, response);
                         },
                         error: function(xhr) {
@@ -205,6 +205,33 @@ $jsonString = json_encode($phpObject);
                     });
 
                     updateTotalValue();
+                });
+
+                function updateWerkproces() {
+                    const name = newWerkproces.find('#wpinput-' + workProces.id).val();
+                    const code = newWerkproces.find('#wpcinput-' + workProces.id).val();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'updateWorkproces',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            workproces_id: workProces.id,
+                            name: name,
+                            code: code
+                        },
+                        success: function(response) {
+
+                        },
+                        error: function(xhr) {
+                            // Handle error response if needed
+                        }
+                    });
+                }
+                newWerkproces.find('#wpinput-' + workProces.id).on('blur', function() {
+                    updateWerkproces();
+                });
+                newWerkproces.find('#wpcinput-' + workProces.id).on('blur', function() {
+                    updateWerkproces();
                 });
             }
 
@@ -218,7 +245,7 @@ $jsonString = json_encode($phpObject);
              data-target="#task-${task.id}">
             <div class="row">
                 <div class="col-sm-11">
-                    <input value='${task.name}'>
+                    <input id='tninput-${task.id}' value='${task.name}'>
                     <button type="button" class="delete">Delete</button>
                 </div>
                 <div class="col-sm-1">
@@ -231,44 +258,44 @@ $jsonString = json_encode($phpObject);
         
         
         `);
-        // <div class="row taak">
-        //     <div class="col-sm-10">
-        //         <div class="row">
-        //             <div class="col-sm-6">
-        //                 <input value="{{ $task->name }}">
-        //                 <button type="button" class="switch">Type</button>
-        //                 <button type="button" class="delete">Delete</button>
-        //             </div>
-        //                 <div class="col-sm-6">
-        //                     @if ($task->type == 1)
-        //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
-        //                             <label class="btn">
-        //                                 <input type="radio" name="options" class="task-option" value="0" disabled>0
-        //                              </label>
-        //                             <label class="btn">
-        //                                 <input type="radio" name="options" class="task-option" value="1" disabled>1
-        //                             </label>
-        //                             <label class="btn">
-        //                                 <input type="radio" name="options" class="task-option" value="2" disabled>2
-        //                             </label>
-        //                             <label class="btn">
-        //                                 <input type="radio" name="options" class="task-option" value="3" disabled>3
-        //                             </label>
-        //                         </div>
-        //                     @elseif ($task->type == 0)
-        //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
-        //                             <label class="btn">
-        //                                 <input type="radio" name="options" class="task-option" value="0" disabled>Nee
-        //                             </label>
-        //                             <label class="btn">
-        //                                 <input type="radio" name="options" class="task-option" value="1" disabled>Ja
-        //                             </label>
-        //                         </div>
-        //                     @endif
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
+                // <div class="row taak">
+                //     <div class="col-sm-10">
+                //         <div class="row">
+                //             <div class="col-sm-6">
+                //                 <input value=" ${$task.name}">
+                //                 <button type="button" class="switch">Type</button>
+                //                 <button type="button" class="delete">Delete</button>
+                //             </div>
+                //                 <div class="col-sm-6">
+                //                     
+                //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
+                //                             <label class="btn">
+                //                                 <input type="radio" name="options" class="task-option" value="0" disabled>0
+                //                              </label>
+                //                             <label class="btn">
+                //                                 <input type="radio" name="options" class="task-option" value="1" disabled>1
+                //                             </label>
+                //                             <label class="btn">
+                //                                 <input type="radio" name="options" class="task-option" value="2" disabled>2
+                //                             </label>
+                //                             <label class="btn">
+                //                                 <input type="radio" name="options" class="task-option" value="3" disabled>3
+                //                             </label>
+                //                         </div>
+                //                     
+                //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
+                //                             <label class="btn">
+                //                                 <input type="radio" name="options" class="task-option" value="0" disabled>Nee
+                //                             </label>
+                //                             <label class="btn">
+                //                                 <input type="radio" name="options" class="task-option" value="1" disabled>Ja
+                //                             </label>
+                //                         </div>
+                //                    
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     </div>
                 taakContainer.append(newTaak);
                 werkprocesRow.find('#workprocess-' + task.workprocess_id).append(taakContainer);
 
@@ -301,7 +328,6 @@ $jsonString = json_encode($phpObject);
                         },
                         success: function(response) {
                             // Handle success response if needed
-                            console.log(response);
                             // addWerkprocesRow(newKerntaak, response);
                         },
                         error: function(xhr) {
@@ -310,6 +336,29 @@ $jsonString = json_encode($phpObject);
                     });
                     updateTotalValue();
                 });
+
+                function updateTaak() {
+                    const name = newTaak.find('#tninput-' + task.id).val();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'updateTask',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            task_id: task.id,
+                            name: name,
+                        },
+                        success: function(response) {
+
+                        },
+                        error: function(xhr) {
+                            // Handle error response if needed
+                        }
+                    });
+                }
+
+                newTaak.find('#tninput-' + task.id).on('blur', function() {
+                    updateTaak();
+                });
             }
             var jsObject = JSON.parse('<?php echo $jsonString; ?>');
             jsObject.forEach(function(jsObject) {
@@ -317,29 +366,27 @@ $jsonString = json_encode($phpObject);
             });
 
             $('#add-kerntaak-button').on("click", function() {
-                console.log(jsObject[0]);
                 $.ajax({
-                        type: 'POST',
-                        url: 'saveCoretask', // Update the URL to the route that will handle the submission
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            course_id: jsObject[0].course_id, 
-                            name: 'Name',
-                            code: 'Code'
-                        },
-                        success: function(response) {
-                            // Handle success response if needed
-                            response["coretask"].workprocesses = []
-                            console.log(response["coretask"]);
-                            addKerntaak(response["coretask"]);
-                        },
-                        error: function(xhr) {
-                            // Handle error response if needed
-                        }
-                    });
-
+                    type: 'POST',
+                    url: 'saveCoretask', // Update the URL to the route that will handle the submission
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        course_id: jsObject[0].course_id,
+                        name: 'Name',
+                        code: 'Code'
+                    },
+                    success: function(response) {
+                        // Handle success response if needed
+                        response["coretask"].workprocesses = []
+                        addKerntaak(response["coretask"]);
+                    },
+                    error: function(xhr) {
+                        // Handle error response if needed
+                    }
                 });
-            
+
+            });
+
 
 
 
@@ -351,6 +398,8 @@ $jsonString = json_encode($phpObject);
                         <div class="row">
                             <div class="col-sm-11">
                                 <input id='ktinput-${jsObject.id}' value='${jsObject.name}'>
+                                <input id='ktcinput-${jsObject.id}' value='${jsObject.code}'>
+
                                 <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button>
                                 <button type="button" class="delete">Delete</button>
                             </div>
@@ -378,8 +427,8 @@ $jsonString = json_encode($phpObject);
                         },
                         success: function(response) {
                             // Handle success response if needed
-                            console.log(response);
-                            // addWerkprocesRow(newKerntaak, response);
+                            response["workproces"].tasks = [];
+                            addWerkprocesRow(newKerntaak, response["workproces"]);
                         },
                         error: function(xhr) {
                             // Handle error response if needed
@@ -398,7 +447,6 @@ $jsonString = json_encode($phpObject);
                         },
                         success: function(response) {
                             // Handle success response if needed
-                            console.log(response);
                             // addWerkprocesRow(newKerntaak, response);
                         },
                         error: function(xhr) {
@@ -406,30 +454,37 @@ $jsonString = json_encode($phpObject);
                         }
                     });
 
-                
+
                     updateTotalValue();
                 });
 
-newKerntaak.find('#ktinput-' + jsObject.id).on('blur', function () {
-        // Trigger AJAX request when input field loses focus
-        const updatedValue = $(this).val();
-        $.ajax({
-            type: 'POST',
-            url: 'updateCoretask',
-            data: {
-                _token: '{{ csrf_token() }}',
-                coretask_id: jsObject.id,
-                name: updatedValue,
-                code: 'K3'
-            },
-            success: function (response) {
-                // Handle success response if needed
-            },
-            error: function (xhr) {
-                // Handle error response if needed
-            }
-        });
-    });
+
+                function updateKerntaak() {
+                    const name = newKerntaak.find('#ktinput-' + jsObject.id).val();
+                    const code = newKerntaak.find('#ktcinput-' + jsObject.id).val();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'updateCoretask',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            coretask_id: jsObject.id,
+                            name: name,
+                            code: code
+                        },
+                        success: function(response) {
+                            // Handle success response if needed
+                        },
+                        error: function(xhr) {
+                            // Handle error response if needed
+                        }
+                    });
+                }
+                newKerntaak.find('#ktinput-' + jsObject.id).on('blur', function() {
+                    updateKerntaak();
+                });
+                newKerntaak.find('#ktcinput-' + jsObject.id).on('blur', function() {
+                    updateKerntaak();
+                });
 
                 kerntaakContainer.append(newKerntaak);
 
