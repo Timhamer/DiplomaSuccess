@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
     <!DOCTYPE html>
 <html>
 <head>
@@ -241,6 +240,12 @@
     <div class="container exam-container">
         <div class="footer">
             <div class="row">
+
+                <?php
+                echo "<pre style='color: white !important; text-align: left !important;'>";
+                print_r($examiners);
+                echo "</pre>";
+                ?>
                 <div class="col-sm-6">
                     <div class="signature-box">
                         <label for="signature">Handtekening Frans de Boer</label> <br>
@@ -250,15 +255,7 @@
                         </section>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="signature-box">
-                        <label for="signature">Handtekening Richard Kingma</label> <br>
-                        <section class="signature-component">
-                            <canvas id="signature-pad" width="400" height="200"></canvas>
-                            <button id="clear">🔄</button>
-                        </section>
-                    </div>
-                </div>
+
             </div>
 
             <div class="row">

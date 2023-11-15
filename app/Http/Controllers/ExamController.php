@@ -11,6 +11,7 @@ use App\Models\ExamTask;
 use App\Models\Workproces;
 use Illuminate\Http\Request;
 use App\Models\ExamWorkprocess;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 class ExamController extends Controller
@@ -77,17 +78,28 @@ class ExamController extends Controller
         }
 
         if ($user->role == 2) {
-            $examiner = Examiner::where('user_id', $user->id)
-                ->where('exam_id', $exam->id)
-                ->first();
+            $examinersq = Examiner::where('exam_id', $exam->id)->get();
+            $examiners = array();
 
-            if (!$examiner) {
+
+            $i = 0;
+            foreach ($examinersq as $examiner) {
+                $ExaminerUserID = $examiner->user_id;
+                $examiners[$i] = User::where('id', $ExaminerUserID)->first();
+                $i++;
+            }
+
+            if (!$examiners) {
                 session(['user' => null]);
                 return redirect()->route('login');
             }
         }
 
-        return view('Exam', compact('user', 'exam'));
+        if (isset($examiners)) {
+            return view('Exam', compact('user', 'exam', 'examiners'));
+        } else {
+            return view('Exam', compact('user', 'exam'));
+        }
     }
 
     public function see_exam(Request $request)
