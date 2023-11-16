@@ -246,9 +246,7 @@ class ExamController extends Controller
         $existingCoretask = CoreTask::where('course_id', $courseId)->where('code', $code)->first();
 
         if ($existingCoretask) {
-            // If the row exists, update the answer column
-            $existingCoretask->name = $name;
-            $existingCoretask->save();
+            return response()->json(['coretask' => ['exists' => true, 'data' => $existingCoretask]]);
         } else {
             // If the row does not exist, create a new one
             $coretask = new CoreTask();
@@ -271,9 +269,7 @@ class ExamController extends Controller
         $existingWorkProces = Workproces::where('coretask_id', $coretaskId)->where('code', $code)->first();
 
         if ($existingWorkProces) {
-            // If the row exists, update the answer column
-            $existingWorkProces->name = $name;
-            $existingWorkProces->save();
+            return response()->json(['workproces' => ['exists' => true, 'data' => $existingWorkProces]]);
         } else {
             // If the row does not exist, create a new one
             $workProces = new Workproces();
@@ -283,8 +279,8 @@ class ExamController extends Controller
             $workProces->save();
 
             $workProces->refresh();
+            return response()->json(['workproces' => $workProces]);
         }
-        return response()->json(['workproces' => $workProces]);
     }
 
     public function insertTask(Request $request)
@@ -303,6 +299,8 @@ class ExamController extends Controller
         $existingTask = Task::where('workprocess_id', $workProcesId)->where('name', $name)->first();
 
         if ($existingTask) {
+            return response()->json(['task' => ['exists' => true, 'data' => $existingTask]]);
+
         } else {
             $task = new Task();
             $task->workprocess_id = $workProcesId;

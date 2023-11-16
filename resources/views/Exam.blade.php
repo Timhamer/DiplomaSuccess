@@ -80,6 +80,7 @@
             })
         }
 
+
         async function FeedbackBox(workprocess_id, exam_id) {
             Placeholder = 'Typ je feedback hier...';
 

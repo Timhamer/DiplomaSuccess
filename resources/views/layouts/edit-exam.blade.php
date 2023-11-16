@@ -8,6 +8,8 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -51,7 +53,7 @@ $jsonString = json_encode($phpObject);
                     type: 'POST',
                     url: this.getAttribute(
                         'data-route'
-                        ), // Update the URL to the route that will handle the submission
+                    ), // Update the URL to the route that will handle the submission
                     data: {
                         _token: '{{ csrf_token() }}',
                         exam_id: examId,
@@ -70,6 +72,26 @@ $jsonString = json_encode($phpObject);
 
             let showFirstSet = true;
             let kerntaakContainer = $("#kerntaak-container");
+
+            function exists(object) {
+                const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: object.data.name + ' is nog beschikbaar voor wijzigen'
+            })
+            }
+            
 
             function generateUniqueId(prefix, counter) {
                 counter++;
@@ -173,8 +195,9 @@ $jsonString = json_encode($phpObject);
                             three: 'three'
                         },
                         success: function(response) {
+                            console.log(response.task);
                             addTaakRow(newWerkproces, response["task"]);
-                            
+
 
                         },
                         error: function(xhr) {
@@ -241,20 +264,15 @@ $jsonString = json_encode($phpObject);
                 const newTaak = $(`<div class='taak-row' id="taak-${task.id}}"></div>`);
                 newTaak.append(`
 
-                <div class="card-header task-header" data-toggle="collapse"
-             data-target="#task-${task.id}">
+                <div class="card-header task-header">
             <div class="row">
                 <div class="col-sm-11">
                     <input id='tninput-${task.id}' value='${task.name}'>
                     <button type="button" class="delete">Delete</button>
                 </div>
-                <div class="col-sm-1">
-                    <label>v</label>
-                </div>
+                
             </div>
-        </div>
-        <div class="collapse" id="task-${task.id}">
-        </div>
+        
         
         
         `);
@@ -372,13 +390,17 @@ $jsonString = json_encode($phpObject);
                     data: {
                         _token: '{{ csrf_token() }}',
                         course_id: jsObject[0].course_id,
-                        name: 'Name',
+                        name: 'Kerntaak',
                         code: 'Code'
                     },
                     success: function(response) {
+                        if (response.coretask && response.coretask.exists) {
+                                exists(response.coretask);
+                            } else {
                         // Handle success response if needed
-                        response["coretask"].workprocesses = []
+                        response["coretask"].workprocesses = [];
                         addKerntaak(response["coretask"]);
+                            }
                     },
                     error: function(xhr) {
                         // Handle error response if needed
@@ -400,7 +422,6 @@ $jsonString = json_encode($phpObject);
                                 <input id='ktinput-${jsObject.id}' value='${jsObject.name}'>
                                 <input id='ktcinput-${jsObject.id}' value='${jsObject.code}'>
 
-                                <button type='button' class='add-werkproces-button btn btn-secondary'>Werkproces +</button>
                                 <button type="button" class="delete">Delete</button>
                             </div>
                             <div class="col-sm-1">
@@ -409,11 +430,28 @@ $jsonString = json_encode($phpObject);
                         </div>
                         </div>
                         <div class="collapse" id="kerntaak-${jsObject.id}">
+                            
                             </div>
                 `);
                 jsObject.workprocesses.forEach(function(workProces) {
                     addWerkprocesRow(newKerntaak, workProces);
                 });
+                newKerntaak.find('#kerntaak-' + jsObject.id).append(`
+                <div class="row">
+                        <div class="col-sm-5">
+                            <hr>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <button type='button' class='add-werkproces-button btn btn-primary addbutton'>Werkproces +</button>
+
+                        </div>
+
+                        <div class="col-sm-5">
+                            <hr>
+                        </div>
+                    </div>
+                `);
                 newKerntaak.find('.add-werkproces-button').on("click", function() {
 
                     $.ajax({
@@ -422,13 +460,17 @@ $jsonString = json_encode($phpObject);
                         data: {
                             _token: '{{ csrf_token() }}',
                             coretask_id: jsObject.id,
-                            name: 'Hallowohfefbaifu',
-                            code: 'W3'
+                            name: 'Werkproces',
+                            code: 'code'
                         },
                         success: function(response) {
-                            // Handle success response if needed
-                            response["workproces"].tasks = [];
-                            addWerkprocesRow(newKerntaak, response["workproces"]);
+                            if (response.workproces && response.workproces.exists) {
+                                exists(response.workproces);
+                            } else {
+                                // Handle success response for new work process
+                                response.workproces.tasks = [];
+                                addWerkprocesRow(newKerntaak, response.workproces);
+                            }
                         },
                         error: function(xhr) {
                             // Handle error response if needed
