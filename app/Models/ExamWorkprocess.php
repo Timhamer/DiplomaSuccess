@@ -10,4 +10,10 @@ class ExamWorkprocess extends Model
 
     use HasFactory;
     protected $table = 'exam_workprocess';
+
+    protected $fillable = ['definitive', 'feedback', 'score'];
+
+
 }
+
+

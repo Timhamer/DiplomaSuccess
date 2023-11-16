@@ -36,8 +36,13 @@ class ExamController extends Controller
         if ($user->role == 1) {
             $exam = Exam::where('id', $id)
                 ->where('user_id', $user->id)
-                ->with('course.coreTasks.workProcesses.tasks.taskValues')
-                ->first();
+//                ->with('course.coreTasks.workProcesses.tasks.taskValues')
+                ->with('coreTasks.workProcesses.tasks.taskValues', 'coreTasks.workProcesses.examWorkprocesses')
+                    ->first();
+
+$workprocess_id = 1;
+$exam_id = 1;
+            $existingWorkprocessFeedback = ExamWorkprocess::where('workprocess_id', $workprocess_id)->where('exam_id', $exam_id)->first();
 
             // if ($exam) {
             //     // You should check if the exam was found before using it
@@ -319,7 +324,7 @@ class ExamController extends Controller
             $task->refresh();
         }
         return response()->json(['task' => $task]);
-        
+
     }
 
     public function updateCoretask(Request $request)
@@ -338,7 +343,7 @@ class ExamController extends Controller
             $existingCoretask->save();
         } else {
 
-           
+
         }
     }
 
@@ -358,7 +363,7 @@ class ExamController extends Controller
             $existingWorkProces->save();
         } else {
 
-           
+
         }
     }
 
@@ -379,7 +384,7 @@ class ExamController extends Controller
         } else {
             return response()->json(['message' => 'Task updated failed']);
 
-           
+
         }
     }
 
@@ -389,10 +394,10 @@ class ExamController extends Controller
         try {
             // Find the CoreTask by ID
             $coreTask = CoreTask::findOrFail($coretaskId);
-    
+
             // Delete the CoreTask
             $coreTask->delete();
-    
+
             // You can return a response indicating success if needed
             return response()->json(['message' => 'Core task deleted successfully']);
         } catch (\Exception $e) {
@@ -408,10 +413,10 @@ class ExamController extends Controller
         try {
             // Find the CoreTask by ID
             $workproces = Workproces::findOrFail($workprocesId);
-    
+
             // Delete the CoreTask
             $workproces->delete();
-    
+
             // You can return a response indicating success if needed
             return response()->json(['message' => 'Workproces deleted successfully']);
         } catch (\Exception $e) {
@@ -427,10 +432,10 @@ class ExamController extends Controller
         try {
             // Find the CoreTask by ID
             $task = Task::findOrFail($taskId);
-    
+
             // Delete the CoreTask
             $task->delete();
-    
+
             // You can return a response indicating success if needed
             return response()->json(['message' => 'Task deleted successfully']);
         } catch (\Exception $e) {

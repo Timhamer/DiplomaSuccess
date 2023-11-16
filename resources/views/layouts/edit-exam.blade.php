@@ -77,7 +77,33 @@ $jsonString = json_encode($phpObject);
             }
 
             function toggleRadioButtons(radioButtons, showFirstSet) {
-                // ... (unchanged)
+                radioButtons.empty();
+
+                if (showFirstSet) {
+                    radioButtons.append(`
+                    <label>
+                        <input type="radio" name="input" value="0" disabled> 0
+                    </label>
+                    <label>
+                        <input type="radio" name="input" value="1" disabled> 1
+                    </label>
+                    <label>
+                        <input type="radio" name="input" value="2" disabled> 2
+                    </label>
+                    <label>
+                        <input type="radio" name="input" value="3" disabled> 3
+                    </label>
+                `);
+                } else {
+                    radioButtons.append(`
+                    <label>
+                        <input type="radio" name="input" value="1" disabled> Ja
+                    </label>
+                    <label>
+                        <input type="radio" name="input" value="0" disabled> Nee
+                    </label>
+                `);
+                }
             }
 
             function updateTotalValueInputs(totalValue, container, werkprocesId) {
@@ -174,7 +200,7 @@ $jsonString = json_encode($phpObject);
                         },
                         success: function(response) {
                             addTaakRow(newWerkproces, response["task"]);
-                            
+
 
                         },
                         error: function(xhr) {
@@ -255,8 +281,8 @@ $jsonString = json_encode($phpObject);
         </div>
         <div class="collapse" id="task-${task.id}">
         </div>
-        
-        
+
+
         `);
                 // <div class="row taak">
                 //     <div class="col-sm-10">
@@ -267,7 +293,7 @@ $jsonString = json_encode($phpObject);
                 //                 <button type="button" class="delete">Delete</button>
                 //             </div>
                 //                 <div class="col-sm-6">
-                //                     
+                //
                 //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
                 //                             <label class="btn">
                 //                                 <input type="radio" name="options" class="task-option" value="0" disabled>0
@@ -282,7 +308,7 @@ $jsonString = json_encode($phpObject);
                 //                                 <input type="radio" name="options" class="task-option" value="3" disabled>3
                 //                             </label>
                 //                         </div>
-                //                     
+                //
                 //                         <div class="btn-group threeopt-radio" data-toggle="buttons">
                 //                             <label class="btn">
                 //                                 <input type="radio" name="options" class="task-option" value="0" disabled>Nee
@@ -291,7 +317,7 @@ $jsonString = json_encode($phpObject);
                 //                                 <input type="radio" name="options" class="task-option" value="1" disabled>Ja
                 //                             </label>
                 //                         </div>
-                //                    
+                //
                 //                 </div>
                 //             </div>
                 //         </div>

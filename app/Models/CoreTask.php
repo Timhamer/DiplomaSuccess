@@ -20,4 +20,6 @@ class CoreTask extends Model
     {
         return $this->hasMany(Workproces::class, 'coretask_id');
     }
+
+
 }
