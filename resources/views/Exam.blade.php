@@ -243,19 +243,22 @@
 
                 <?php
                 echo "<pre style='color: white !important; text-align: left !important;'>";
-                print_r($examiners);
+                //dd($examiners);
+                //print_r($examiners);
                 echo "</pre>";
                 ?>
-                <div class="col-sm-6">
-                    <div class="signature-box">
-                        <label for="signature">Handtekening Frans de Boer</label> <br>
-                        <section class="signature-component">
-                            <canvas id="signature-pad" width="400" height="200"></canvas>
-                            <button id="clear">🔄</button>
-                        </section>
-                    </div>
-                </div>
 
+                @foreach($examiners as $examiner)
+                    <div class="col-sm-6">
+                        <div class="signature-box">
+                            <label for="signature">Handtekening {{$examiner->first_name}} {{$examiner->middle_name}} {{$examiner->last_name}}</label> <br>
+                            <section class="signature-component">
+                                <canvas id="signature-pad" width="400" height="200"></canvas>
+                                <button id="clear">🔄</button>
+                            </section>
+                        </div>
+                    </div>
+                @endforeach
             </div>
 
             <div class="row">
