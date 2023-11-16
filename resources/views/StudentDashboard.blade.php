@@ -44,7 +44,7 @@
                                         $ButtonText = "Beoordeel examen";
                                     }
                                     ?>
-                                    <a href="{{ route('Examine', ['id' => $exam->course->id]) }}">
+                                    <a href="{{ route('Examine', ['id' => $exam->id]) }}">
                                         <button type="button" class="btn btn-primary viewexambtn" data-toggle="modal" data-target="#exam-{{$exam->id}}">{{$ButtonText}}</button>
                                     </a>
                             </div>

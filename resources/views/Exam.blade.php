@@ -2,7 +2,7 @@
     <!DOCTYPE html>
 <html>
 <head>
-    <title>Studenten dashboard</title>
+    <title>Examen invullen</title>
     {{-- <pre> @php var_dump($exam)@endphp </pre> --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -170,9 +170,14 @@
                                                         <input type="radio" name="options" class="task-option" value="0"
                                                                data-exam-id="{{ $exam->id }}"
                                                                data-task-id="{{ $task->id }}"
-                                                               data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
-                                                            {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}
-                                                            @endif>{{  $task->zero }}
+                                                               data-route="{{ $exam->id }}"
+                                                               @if (count($task->taskValues) > 0)
+                                                                   {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}
+                                                               @endif
+                                                               @if ($exam->published == 1)
+                                                                   disabled
+                                                            @endif
+                                                        >{{  $task->zero }}
                                                     </label>
                                                     <label class="btn">
                                                         <input type="radio" name="options" class="task-option" value="1"
@@ -180,7 +185,11 @@
                                                                data-task-id="{{ $task->id }}"
                                                                data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
                                                             {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}
-                                                            @endif>{{ $task->one }}
+                                                            @endif
+                                                               @if ($exam->published == 1)
+                                                                   disabled
+                                                            @endif
+                                                        >{{ $task->one }}
                                                     </label>
                                                     <label class="btn">
                                                         <input type="radio" name="options" class="task-option" value="2"
@@ -188,7 +197,11 @@
                                                                data-task-id="{{ $task->id }}"
                                                                data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
                                                             {{ $task->taskValues[0]->answer == 2 ? 'checked' : '' }}
-                                                            @endif>{{ $task->two }}
+                                                            @endif
+                                                               @if ($exam->published == 1)
+                                                                   disabled
+                                                            @endif
+                                                        >{{ $task->two }}
                                                     </label>
                                                     <label class="btn">
                                                         <input type="radio" name="options" class="task-option" value="3"
@@ -196,7 +209,11 @@
                                                                data-task-id="{{ $task->id }}"
                                                                data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
                                                             {{ $task->taskValues[0]->answer == 3 ? 'checked' : '' }}
-                                                            @endif>{{ $task->three }}
+                                                            @endif
+                                                               @if ($exam->published == 1)
+                                                                   disabled
+                                                            @endif
+                                                        >{{ $task->three }}
                                                     </label>
                                                 </div>
                                             @elseif ($task->type == 0)
@@ -207,7 +224,11 @@
                                                                data-task-id="{{ $task->id }}"
                                                                data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
                                                             {{ $task->taskValues[0]->answer == 0 ? 'checked' : '' }}
-                                                            @endif>Nee
+                                                            @endif
+                                                               @if ($exam->published == 1)
+                                                                   disabled
+                                                            @endif
+                                                        >Nee
                                                     </label>
                                                     <label class="btn">
                                                         <input type="radio" name="options" class="task-option" value="1"
@@ -215,7 +236,11 @@
                                                                data-task-id="{{ $task->id }}"
                                                                data-route="{{ $exam->id }}" @if (count($task->taskValues) > 0)
                                                             {{ $task->taskValues[0]->answer == 1 ? 'checked' : '' }}
-                                                            @endif>Ja
+                                                            @endif
+                                                               @if ($exam->published == 1)
+                                                                   disabled
+                                                            @endif
+                                                        >Ja
                                                     </label>
                                                 </div>
                                             @endif
@@ -226,7 +251,13 @@
                         @endforeach
                         <hr class="wp-feedback-hr">
                         <button class="btn btn-primary wp-feedback-btn"
-                                onclick="FeedbackBox({{$workprocess->id}}, {{$exam->id}})">Feedback geven
+                                onclick="FeedbackBox({{$workprocess->id}}, {{$exam->id}})" @if ($exam->published == 1)
+{{--                                    > {{  }}--}}  {{ dump($exam)}}
+
+                            @else
+
+                        @endif
+                        >Feedback geven
                         </button>
                         <hr class="wp-feedback-hr">
 
@@ -244,19 +275,22 @@
 
                 <?php
                 echo "<pre style='color: white !important; text-align: left !important;'>";
-                print_r($examiners);
+                //dd($examiners);
+                //print_r($examiners);
                 echo "</pre>";
                 ?>
-                <div class="col-sm-6">
-                    <div class="signature-box">
-                        <label for="signature">Handtekening Frans de Boer</label> <br>
-                        <section class="signature-component">
-                            <canvas id="signature-pad" width="400" height="200"></canvas>
-                            <button id="clear">🔄</button>
-                        </section>
-                    </div>
-                </div>
 
+                @foreach($examiners as $examiner)
+                    <div class="col-sm-6">
+                        <div class="signature-box">
+                            <label for="signature">Handtekening {{$examiner->first_name}} {{$examiner->middle_name}} {{$examiner->last_name}}</label> <br>
+                            <section class="signature-component">
+                                <canvas id="signature-pad" width="400" height="200"></canvas>
+                                <button id="clear">🔄</button>
+                            </section>
+                        </div>
+                    </div>
+                @endforeach
             </div>
 
             <div class="row">

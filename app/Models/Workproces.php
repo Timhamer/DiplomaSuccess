@@ -16,4 +16,9 @@ class Workproces extends Model
     {
         return $this->hasMany(Task::class, 'workprocess_id');
     }
+
+    public function examWorkprocess()
+    {
+        return $this->hasMany(ExamWorkprocess::class, 'workprocess_id');
+    }
 }
